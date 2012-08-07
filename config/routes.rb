@@ -17,6 +17,9 @@ MolooTemplate::Application.routes.draw do
   match 'products/:id(.format)' => "products#show", :via => :get
   match 'products/:id(.format)' => "products#destroy", :via => :delete
   match 'products/:id(.format)' => "products#update", :via => :update
+
+  match 'photos(.format)' => "photos#create", :via => :post
+  match 'photos/:id(.format)' => "photos#destroy", :via => :delete
   # get "products/create"
   # get "products/show"
   # get "products/destroy"

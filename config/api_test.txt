@@ -1,0 +1,34 @@
+1. 가입하기
+
+POST 
+http://localhost:3000/users.json?user[name]=wooram&user[email]=iam1494@gmail.com&user[password]=ekseo00&user[password_confirmation]=ekseo00
+
+2. 로그인 하기
+POST 
+http://localhost:3000/users/log_in.json?email=iam1494@gmail.com&password=ekseo00
+
+3. 로그아웃 하기 
+DELETE 
+http://localhost:3000/friends/sign_out.json?email=iam1494@gmail.com
+
+4. Auth test
+GET 
+http://localhost:3000/users/1.json?auth_token=6zPja98mDxG9bX7xSdqc
+
+5. Product 가져오기
+GET 
+http://localhost:3000/products.json?auth_token=6zPja98mDxG9bX7xSdqc
+
+6. Product 만들기
+POST 
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=6zPja98mDxG9bX7xSdqc
+
+7. 한개의 Product 가져오기/지우기
+GET 
+http://localhost:3000/products/1.json?auth_token=TcAeDaTphzP2go1t4a6e
+
+DELETE
+http://localhost:3000/products/1.json?auth_token=TcAeDaTphzP2go1t4a6e
+
+Curl 설명서
+http://curl.haxx.se/docs/httpscripting.html

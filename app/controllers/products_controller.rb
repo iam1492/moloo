@@ -35,7 +35,10 @@ class ProductsController < ApplicationController
   	@product = current_user.products.find(params[:id])
 	respond_to do |format|
 		format.html
-		format.json {render :json => {:metadata => {:success => true}, :product => @product, :page => params[:page]}}
+		format.json {render :json => {:metadata => {:success => true},
+                                :product => @product,
+                                :page => params[:page],
+                                :photos => @product.photos }}
 	end
   end
 

@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     respond_to do |format|
     	format.html
-    	format.json { render :json => { :metadata => {:success => true}, :users => @user}}
+    	format.json { render :json => { :metadata => {:success => true}, :users => @user, :products => @user.products}}
     end
   end
 end
