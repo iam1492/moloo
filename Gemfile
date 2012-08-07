@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 gem 'rails', '3.2.7'
-gem 'sqlite3'
+gem 'pg' #change for deploy
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -19,3 +19,9 @@ gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.1.0"
 gem "will_paginate", ">= 3.0.3"
 gem "paperclip", "~> 3.0" # Image controller
+
+# Use unicorn as the app server
+gem 'unicorn'
+
+# Deploy with Capistrano
+gem 'capistrano'
