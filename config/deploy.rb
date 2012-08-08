@@ -1,6 +1,6 @@
 require "bundler/capistrano"
 
-server "14.63.214.10", :web, :app, :db, primary: true
+server "14.63.213.154", :web, :app, :db, primary: true
 
 set :application, "moloo"
 set :user, "deployer"
