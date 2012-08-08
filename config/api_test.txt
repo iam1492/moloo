@@ -13,22 +13,22 @@ http://localhost:3000/friends/sign_out.json?email=iam1494@gmail.com
 
 4. Auth test
 GET 
-http://localhost:3000/users.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/users.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 5. Product 가져오기
 GET 
-http://localhost:3000/products.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/products.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 6. Product 만들기
 POST 
-http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=U7Ca6QWKtzaFc41z16qJ
 
 7. 한개의 Product 가져오기/지우기
 GET 
-http://localhost:3000/products/1.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 DELETE
-http://localhost:3000/products/1.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 8. 이미지 업로드
 POST
