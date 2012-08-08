@@ -1,4 +1,8 @@
 MolooTemplate::Application.routes.draw do
+  get "comments/create"
+
+  get "comments/destory"
+
   authenticated :user do
     root :to => 'home#index'
   end
@@ -6,8 +10,8 @@ MolooTemplate::Application.routes.draw do
   devise_for :users
   #resources :users, :only => [:show, :index]
 
-  match 'users(.format)' => "users#index", :via => :get
-  match 'users/:id(.format)' => "users#show", :via => :get
+  match 'users/list(.format)' => "users#list", :via => :get
+  match 'users(.format)' => "users#show", :via => :get
   match 'users/log_in(.format)' => "sessions#create", :via => :post
   match 'users/log_out(.format)' => "sessions#destroy", :via => :delete
 
@@ -20,6 +24,10 @@ MolooTemplate::Application.routes.draw do
 
   match 'photos(.format)' => "photos#create", :via => :post
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete
+
+  match 'comments(.format)' => "comments#create", :via => :post
+  match 'comments/:id(.format)' => "comments#destroy", :via => :delete
+
   # get "products/create"
   # get "products/show"
   # get "products/destroy"

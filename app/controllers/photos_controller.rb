@@ -1,42 +1,30 @@
 class PhotosController < ApplicationController
-  def index
-    @photos = Photo.all
-  end
-
-  def show
-    @photo = Photo.find(params[:id])
-  end
- 
-  def new
-    @photo = Photo.new
-  end
- 
+  before_filter :authenticate_user! 
   def create
   	@product = Product.find(params[:product_id])
-  	@photo = @product.photos.build(params[:photo])
-    #@photo = Photo.new(params[:photo])
+  	@photo = @product.photos.build(:photo => params[:photo])
+    @photo.photo_url = @photo.photo.url
     if @photo.save
       respond_to do |format|
   		  format.html
-  		  format.json {render :json => {:metadata => {:success => true}, :photo => @photo, :product_id => @product.id}}
+  		  format.json {render :json => {:metadata => {:success => true}, 
+                                      :photo => @photo, 
+                                      :product_id => @product.id,                                      
+                                      :message => "succeed to create photo"}}
   	  end
     else
       respond_to do |format|
   		  format.html
-  		  format.json {render :json => {:metadata => {:success => false}, :photo => @photo, :product_id => @product.id}}
+  		  format.json {render :json => {:metadata => {:success => false}, 
+                                      :photo => @photo, 
+                                      :product_id => @product.id,
+                                      :message => "failed to create photo"}}
   	  end
     end
   end
- 
-  def edit
-    @photo = Image.find(params[:id])
-  end
- 
+
   def update
-    @photo = Photo.find(params[:id])
-    if @photo.update_attributes(params[:photo])
-      redirect_to @photo
-    end
+    # implement later
   end
 
   def destroy
@@ -44,12 +32,16 @@ class PhotosController < ApplicationController
   	if @photo.destroy
       respond_to do |format|
   		  format.html
-  		  format.json {render :json => {:metadata => {:success => true}, :photo => @photo}}
+  		  format.json {render :json => {:metadata => {:success => true}, 
+                                      :photo => @photo,
+                                      :message => "succeed to delete photo"}}
   	  end
     else
       respond_to do |format|
   		  format.html
-  		  format.json {render :json => {:metadata => {:success => false}, :photo => @photo}}
+  		  format.json {render :json => {:metadata => {:success => false}, 
+                                      :photo => @photo,
+                                      :message => "failed to delete photo"}}
   	  end
     end
   end

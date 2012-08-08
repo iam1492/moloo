@@ -13,22 +13,39 @@ http://localhost:3000/friends/sign_out.json?email=iam1494@gmail.com
 
 4. Auth test
 GET 
-http://localhost:3000/users/1.json?auth_token=6zPja98mDxG9bX7xSdqc
+http://localhost:3000/users.json?auth_token=gynGZvjg9KQ3PqY6XdiN
 
 5. Product 가져오기
 GET 
-http://localhost:3000/products.json?auth_token=6zPja98mDxG9bX7xSdqc
+http://localhost:3000/products.json?auth_token=gynGZvjg9KQ3PqY6XdiN
 
 6. Product 만들기
 POST 
-http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=6zPja98mDxG9bX7xSdqc
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=gynGZvjg9KQ3PqY6XdiN
 
 7. 한개의 Product 가져오기/지우기
 GET 
-http://localhost:3000/products/1.json?auth_token=TcAeDaTphzP2go1t4a6e
+http://localhost:3000/products/1.json?auth_token=gynGZvjg9KQ3PqY6XdiN
 
 DELETE
-http://localhost:3000/products/1.json?auth_token=TcAeDaTphzP2go1t4a6e
+http://localhost:3000/products/1.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+
+8. 이미지 업로드
+POST
+http://localhost:3000/photos.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+
+curl test
+curl --form photo=@Fridge.jpg --form press=OK "http://localhost:3000/photos.json?product_id=3&auth_token=gynGZvjg9KQ3PqY6XdiN"
+
+9. 이미지 삭제
+DELETE
+http://localhost:3000/photos/1.json
+
+10. 한개의 comment 추가
+http://localhost:3000/comments.json?content=This is my third comment&auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
+
+11. 한개의 comment 삭제
+
 
 Curl 설명서
 http://curl.haxx.se/docs/httpscripting.html

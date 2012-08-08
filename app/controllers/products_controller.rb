@@ -4,10 +4,13 @@ class ProductsController < ApplicationController
 
   def list
   	@products = current_user.products
-	respond_to do |format|
-		format.html
-		format.json {render :json => {:metadata => {:success => true}, :product => @product}}
-	end
+  	respond_to do |format|
+  		format.html
+  		format.json {render :json => {:metadata => {:success => true}, 
+                                    :uid => current_user.id,
+                                    :product => @product,
+                                    :message => "succeed to list all project"}}
+  	end
   end
 
   def create
@@ -21,25 +24,30 @@ class ProductsController < ApplicationController
   	if @product.save
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => true}, :product => @product}}
+  			format.json {render :json => {:metadata => {:success => true},     
+                                                    :product => @product,
+                                                    :message => "succeed to create product"}}
   		end
   	else
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => false}, :product => @product.errors}}
+  			format.json {render :json => {:metadata => {:success => false}, 
+                                                    :product => @product.errors,
+                                                    :message => "fail to create product"}}
   		end
   	end
   end
 
   def show
   	@product = current_user.products.find(params[:id])
-	respond_to do |format|
-		format.html
-		format.json {render :json => {:metadata => {:success => true},
-                                :product => @product,
-                                :page => params[:page],
-                                :photos => @product.photos }}
-	end
+
+  	respond_to do |format|
+  		format.html
+  		format.json {render :json => {:metadata => {:success => true},
+                                                  :product => @product,                                                  
+                                                  :photos => @product.photos,
+                                                  :comments => @product.comments}}
+  	end
   end
 
   def destroy
@@ -47,12 +55,16 @@ class ProductsController < ApplicationController
   	if @product.destroy
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => true}, :product => @product, :message => "product id:#{params[:id]} deleted"}}
+  			format.json {render :json => {:metadata => {:success => true},
+                                      :product => @product, 
+                                      :message => "product id:#{params[:id]} deleted"}}
   		end
   	else
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => false}, :product => @product, :message => "product id#{params[:id]} failed to delete"}}
+  			format.json {render :json => {:metadata => {:success => false}, 
+                                                    :product => @product, 
+                                                    :message => "product id#{params[:id]} failed to delete"}}
   		end
   	end
   end
