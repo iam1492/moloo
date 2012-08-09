@@ -25,7 +25,7 @@ http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=1
 
 7. 한개의 Product 가져오기/지우기
 GET 
-http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
+http://localhost:3000/products/1.json?auth_token=EjzBhnYZpbysxxwFY9qx
 
 DELETE
 http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
@@ -51,4 +51,12 @@ Curl 설명서
 http://curl.haxx.se/docs/httpscripting.html
 
 
+로컬 테스트
 curl --form photo=@image.jpg --form press=OK "http://localhost:3000/photos.json?product_id=1&auth_token=EjzBhnYZpbysxxwFY9qx"
+
+http://localhost:3000/products/1.json?auth_token=EjzBhnYZpbysxxwFY9qx
+
+서버 테스트
+curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=U7Ca6QWKtzaFc41z16qJ"
+
+http://14.63.213.154/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
