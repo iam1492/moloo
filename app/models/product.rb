@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  attr_accessible :description, :handed, :name, :price
+  attr_accessible :description, :handed, :name, :price, :categories
 
   belongs_to :user
   has_many :photos, dependent: :destroy

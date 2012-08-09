@@ -1,7 +1,9 @@
 class PhotosController < ApplicationController
   before_filter :authenticate_user! 
+  before_filter :find_product
+  
   def create
-  	@product = Product.find(params[:product_id])
+  	#@product = Product.find(params[:product_id])
   	@photo = @product.photos.build(:photo => params[:photo])
     if @photo.save
       @photo.photo_url = @photo.photo.url
@@ -46,5 +48,11 @@ class PhotosController < ApplicationController
                                       :message => "failed to delete photo"}}
   	  end
     end
+  end
+
+  private
+
+  def find_product
+    @product = Product.find(params[:product_id])
   end
 end

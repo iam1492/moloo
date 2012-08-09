@@ -1,6 +1,10 @@
 class CommentsController < ApplicationController
+  
+  before_filter :find_product
+
   def create
-  	@product = Product.find(params[:product_id])
+  	#@product = Product.find(params[:product_id])
+
   	@comment = @product.comments.build(:content => params[:content])
   	if @comment.save
   		respond_to do |format|
@@ -37,5 +41,10 @@ class CommentsController < ApplicationController
                                                     :message => "fail to delete comment"}}
   		end
   	end
+  end
+
+  private
+  def find_product
+    @product = Product.find(params[:product_id])
   end
 end
