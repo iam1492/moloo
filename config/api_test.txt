@@ -32,10 +32,10 @@ http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 8. 이미지 업로드
 POST
-http://localhost:3000/photos.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/photos.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 curl test
-curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=gynGZvjg9KQ3PqY6XdiN"
+curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=U7Ca6QWKtzaFc41z16qJ"
 
 9. 이미지 삭제
 DELETE
@@ -49,3 +49,6 @@ http://localhost:3000/comments.json?content=This is my third comment&auth_token=
 
 Curl 설명서
 http://curl.haxx.se/docs/httpscripting.html
+
+
+curl --form photo=@image.jpg --form press=OK "http://localhost:3000/photos.json?product_id=1&auth_token=EjzBhnYZpbysxxwFY9qx"
