@@ -35,7 +35,7 @@ POST
 http://localhost:3000/photos.json?auth_token=gynGZvjg9KQ3PqY6XdiN
 
 curl test
-curl --form photo=@Fridge.jpg --form press=OK "http://localhost:3000/photos.json?product_id=3&auth_token=gynGZvjg9KQ3PqY6XdiN"
+curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=gynGZvjg9KQ3PqY6XdiN"
 
 9. 이미지 삭제
 DELETE
