@@ -25,3 +25,6 @@ gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'
+
+# Vote system
+gem 'thumbs_up'
