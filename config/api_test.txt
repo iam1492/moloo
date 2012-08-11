@@ -51,20 +51,24 @@ http://localhost:3000/comments.json?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
 
 12. 특정 product 에 vote 하기
 POST
-http://localhost:3000/products/1/vote?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
+http://localhost:3000/products/1/vote.json?auth_token=1iPnqnwVUvqPpS6ZKss3
 
-13. 특정 product 에 vote 한 사람 리스트
+13. 특정 product 에 unvote 하기
+DELETE
+http://localhost:3000/products/1/vote.json?auth_token=1iPnqnwVUvqPpS6ZKss3
+
+14. 특정 product 에 vote 한 사람 리스트
 GET
-http://localhost:3000/products/1/voter?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
+http://localhost:3000/products/1/voter.json?auth_token=1iPnqnwVUvqPpS6ZKss3&product_id=3
 
 Curl 설명서
 http://curl.haxx.se/docs/httpscripting.html
 
 
 로컬 테스트
-curl --form photo=@image.jpg --form press=OK "http://localhost:3000/photos.json?product_id=1&auth_token=EjzBhnYZpbysxxwFY9qx"
+curl --form photo=@Fridge.jpg --form press=OK "http://localhost:3000/photos.json?product_id=1&auth_token=1iPnqnwVUvqPpS6ZKss3"
 
-http://localhost:3000/products/1.json?auth_token=EjzBhnYZpbysxxwFY9qx
+http://localhost:3000/products/1.json?auth_token=1iPnqnwVUvqPpS6ZKss3
 
 서버 테스트
 curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=U7Ca6QWKtzaFc41z16qJ"

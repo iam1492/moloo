@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
   		format.html
   		format.json {render :json => {:metadata => {:success => true}, 
                                     # :uid => current_user.id,
-                                    :product => @product,
+                                    :product => @product,                                                                
                                     :message => "succeed to list all project"}}
   	end
   end
@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
       format.json {render :json => {:metadata => {:success => true}, 
                                     # :uid => current_user.id,
                                     :product => @products, 
-                                    :page => params[:page],
+                                    :page => params[:page],                                                                         
                                     :message => "succeed to list all project"}}
     end
   end
@@ -91,12 +91,41 @@ class ProductsController < ApplicationController
   def vote
     #@product = current_user.products.find(params[:id])
     @product = Product.find(params[:id])
-    current_user.vote_for(@product)
-    respond_to do |format|
-        format.html
-        format.json {render :json => {:metadata => {:success => true},
-                                      :product => @product, 
-                                      :message => "product id:#{params[:id]} voted"}}
+    if !current_user.voted_on?(@product)
+      current_user.vote_for(@product)      
+      respond_to do |format|
+          format.html
+          format.json {render :json => {:metadata => {:success => true},
+                                        :product => @product, 
+                                        :message => "product id:#{params[:id]} voted"}}
+      end
+    else
+      respond_to do |format|
+          format.html
+          format.json {render :json => {:metadata => {:success => false},
+                                        :product => @product, 
+                                        :message => "already voted on product id:#{params[:id]}"}}
+      end
+    end
+  end
+
+  def unvote
+    @product = Product.find(params[:id])
+    if current_user.voted_on?(@product)
+      current_user.unvote_for(@product)      
+      respond_to do |format|
+          format.html
+          format.json {render :json => {:metadata => {:success => true},
+                                        :product => @product, 
+                                        :message => "product id:#{params[:id]} unvoted"}}
+      end
+    else
+      respond_to do |format|
+          format.html
+          format.json {render :json => {:metadata => {:success => false},
+                                        :product => @product, 
+                                        :message => "not yet voted on product id:#{params[:id]}"}}
+      end
     end
   end
 

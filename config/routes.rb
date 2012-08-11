@@ -25,6 +25,7 @@ MolooTemplate::Application.routes.draw do
 
   # vote
   match 'products/:id/vote(.format)' => "products#vote", :via => :post
+  match 'products/:id/vote(.format)' => "products#unvote", :via => :delete
   match 'products/:id/voters(.format)' => "products#voters", :via => :get
 
   match 'photos(.format)' => "photos#create", :via => :post

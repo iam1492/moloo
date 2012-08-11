@@ -3,17 +3,16 @@ class PhotosController < ApplicationController
   before_filter :find_product
   
   def create
-  	#@product = Product.find(params[:product_id])
   	@photo = @product.photos.build(:photo => params[:photo])
     if @photo.save
-      @photo.photo_url = @photo.photo.url
+      #@photo.photo_url = @photo.photo.url
       @photo.save
       respond_to do |format|
   		  format.html
   		  format.json {render :json => {:metadata => {:success => true}, 
                                       :photo => @photo, 
                                       :product_id => @product.id,
-                                      :photo_url => @photo.photo.url,                                      
+                                      #:photo_url => @photo.photo.url,                                                                      
                                       :message => "succeed to create photo"}}
   	  end
     else
