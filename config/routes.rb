@@ -20,7 +20,12 @@ MolooTemplate::Application.routes.draw do
   match 'products(.format)' => "products#create", :via => :post
   match 'products/:id(.format)' => "products#show", :via => :get
   match 'products/:id(.format)' => "products#destroy", :via => :delete
-  match 'products/:id(.format)' => "products#update", :via => :update
+  match 'products/:id(.format)' => "products#update", :via => :update  
+  match 'products/mylist(.format)' => "products#mylist", :via => :get
+
+  # vote
+  match 'products/:id/vote(.format)' => "products#vote", :via => :post
+  match 'products/:id/voters(.format)' => "products#voters", :via => :get
 
   match 'photos(.format)' => "photos#create", :via => :post
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete

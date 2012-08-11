@@ -13,15 +13,15 @@ http://localhost:3000/friends/sign_out.json?email=iam1494@gmail.com
 
 4. Auth test
 GET 
-http://localhost:3000/users.json?auth_token=U7Ca6QWKtzaFc41z16qJ
+http://localhost:3000/users.json?auth_token=6zPja98mDxG9bX7xSdqc
 
 5. Product 가져오기
 GET 
-http://localhost:3000/products.json?auth_token=U7Ca6QWKtzaFc41z16qJ
+http://localhost:3000/products.json?auth_token=1iPnqnwVUvqPpS6ZKss3
 
 6. Product 만들기
 POST 
-http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=U7Ca6QWKtzaFc41z16qJ
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=6zPja98mDxG9bX7xSdqc
 
 7. 한개의 Product 가져오기/지우기
 GET 
@@ -42,10 +42,20 @@ DELETE
 http://localhost:3000/photos/1.json
 
 10. 한개의 comment 추가
+POST
 http://localhost:3000/comments.json?content=This is my third comment&auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
 
 11. 한개의 comment 삭제
+DELETE
+http://localhost:3000/comments.json?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
 
+12. 특정 product 에 vote 하기
+POST
+http://localhost:3000/products/1/vote?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
+
+13. 특정 product 에 vote 한 사람 리스트
+GET
+http://localhost:3000/products/1/voter?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
 
 Curl 설명서
 http://curl.haxx.se/docs/httpscripting.html

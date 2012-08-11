@@ -1,16 +1,29 @@
 class ProductsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:list, :show ]
+  before_filter :set_current_user
 
-  def list
+  def mylist
   	@products = current_user.products
   	respond_to do |format|
   		format.html
   		format.json {render :json => {:metadata => {:success => true}, 
-                                    :uid => current_user.id,
+                                    # :uid => current_user.id,
                                     :product => @product,
                                     :message => "succeed to list all project"}}
   	end
+  end
+
+  def list
+    @products = Product.paginate(:page => params[:page])
+    respond_to do |format|
+      format.html
+      format.json {render :json => {:metadata => {:success => true}, 
+                                    # :uid => current_user.id,
+                                    :product => @products, 
+                                    :page => params[:page],
+                                    :message => "succeed to list all project"}}
+    end
   end
 
   def create
@@ -38,9 +51,10 @@ class ProductsController < ApplicationController
   	end
   end
 
+  #누구나 볼 수 있게
   def show
-  	@product = current_user.products.find(params[:id])
-
+  	#@product = current_user.products.find(params[:id])
+    @product = Products.find(params[:id])
   	respond_to do |format|
   		format.html
   		format.json {render :json => {:metadata => {:success => true},
@@ -50,8 +64,10 @@ class ProductsController < ApplicationController
   	end
   end
 
+  #삭제는 해당 upload 유저만 가능
   def destroy
   	@product = current_user.products.find(params[:id])
+    #@product = Products.find(params[:id])
   	if @product.destroy
   		respond_to do |format|
   			format.html
@@ -70,5 +86,33 @@ class ProductsController < ApplicationController
   end
 
   def update
+  end
+
+  def vote
+    #@product = current_user.products.find(params[:id])
+    @product = Product.find(params[:id])
+    current_user.vote_for(@product)
+    respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => true},
+                                      :product => @product, 
+                                      :message => "product id:#{params[:id]} voted"}}
+    end
+  end
+
+  def voters
+    @product = Product.find(params[:id])
+    @users = @product.voters_who_voted
+    respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => true},
+                                      :user => @users, 
+                                      :message => "fetch users vote for product id:#{params[:id]}"}}
+    end    
+  end
+
+  private
+  def is_voted? (_product)
+    current_user.voted_on?(_product)
   end
 end
