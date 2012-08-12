@@ -1,13 +1,11 @@
 class User < ActiveRecord::Base
+  acts_as_voter
 	rolify
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
-
-  acts_as_voter
-
   before_save :ensure_authentication_token
 
   # Setup accessible (or protected) attributes for your model
