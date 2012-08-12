@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  acts_as_voter
+  #acts_as_voter
 	rolify
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
