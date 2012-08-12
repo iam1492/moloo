@@ -1,6 +1,6 @@
 class Product < ActiveRecord::Base
   attr_accessible :description, :name, :price, :categories, :voted, :vote_count, :photolist
-  #acts_as_voteable
+  acts_as_voteable
 
   belongs_to :user
   has_many :photos, dependent: :destroy
