@@ -12,9 +12,8 @@ MolooTemplate::Application.routes.draw do
 
   match 'users/list(.format)' => "users#list", :via => :get
   match 'users(.format)' => "users#show", :via => :get
-  match 'users/log_in(.format)' => "sessions#create", :via => :post
-  match 'users/log_out(.format)' => "sessions#destroy", :via => :delete
-
+  match 'users/session(.format)' => "sessions#create", :via => :post
+  match 'users/session(.format)' => "sessions#destroy", :via => :delete
 
   match 'products(.format)' => "products#list", :via => :get
   match 'products(.format)' => "products#create", :via => :post

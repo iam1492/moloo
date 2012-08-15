@@ -7,10 +7,10 @@ class ProductsController < ApplicationController
   	@products = current_user.products
   	respond_to do |format|
   		format.html
-  		format.json {render :json => {:metadata => {:success => true}, 
-                                    # :uid => current_user.id,
-                                    :product => @product,                                                                
-                                    :message => "succeed to list all project"}}
+  		format.json {render :json => {:metadata => {:success => true, :page => params[:page],
+                                                  :message => "succeed to list all project",
+                                                  :total_count => @products.count},
+                                    :product => @products}}
   	end
   end
 
@@ -18,12 +18,15 @@ class ProductsController < ApplicationController
     @products = Product.paginate(:page => params[:page])
     respond_to do |format|
       format.html
-      format.json {render :json => {:metadata => {:success => true}, 
-                                    # :uid => current_user.id,
-                                    :product => @products, 
-                                    :page => params[:page],                                                                         
-                                    :message => "succeed to list all project"}}
+      format.json {render :json => {:metadata => {:success => true, :page => params[:page],
+                                                  :message => "succeed to list all project",
+                                                  :product_count => @products.count},
+                                    :product => @products }}
     end
+  end
+
+  def list_by_category
+    @products = Product.find_by_categories(params[:categories])
   end
 
   def create
@@ -31,43 +34,55 @@ class ProductsController < ApplicationController
   	name = params[:name]
   	description = params[:description]
   	price = params[:price] || nil
+    #categories = params[:categories] || nil
 
   	@product = current_user.products.build(:name => name, :description => :description, :price => price)
-
   	if @product.save
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => true},     
-                                                    :product => @product,
-                                                    :message => "succeed to create product"}}
+  			format.json {render :json => {:metadata => {:success => true, :message => "succeed to create product"},     
+                                      :product => @product}}
   		end
   	else
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => false}, 
-                                                    :product => @product.errors,
-                                                    :message => "fail to create product"}}
+  			format.json {render :json => {:metadata => {:success => false, :message => "fail to create product"}, 
+                                      :product => @product.errors}}
   		end
   	end
   end
 
   #누구나 볼 수 있게
   def show
-  	#@product = current_user.products.find(params[:id])
-    @product = Products.find(params[:id])
-  	respond_to do |format|
-  		format.html
-  		format.json {render :json => {:metadata => {:success => true},
-                                                  :product => @product,                                                  
-                                                  :photos => @product.photos,
-                                                  :comments => @product.comments}}
-  	end
+    @product = Product.find(params[:id])
+    if @product.nil?
+      format.html
+      format.json {render :status=>401, :json => {:metadata => {:success => false, :message => "invalid product id, cannot find any product" }}}
+    else
+      @photos = @product.photos
+      @comments = @product.comments
+    	respond_to do |format|
+    		format.html
+    		format.json {render :json => {:metadata => {:success => true, :message => "succeed to show product", :photo_count => @photos.count, :comment_count => @comments.count },
+                                      :product => @product,  
+                                      :categories => @product.categories,                                                
+                                      :photos => @photos,
+                                      :comments => @comments}}
+    	end
+    end
   end
 
   #삭제는 해당 upload 유저만 가능
   def destroy
   	@product = current_user.products.find(params[:id])
-    #@product = Products.find(params[:id])
+    if @product.nil?
+      respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => true, :message => "fail to find product id:#{params[:id]}"},
+                                      :product => @product }}
+      end
+      return 
+    end
   	if @product.destroy
   		respond_to do |format|
   			format.html
@@ -78,9 +93,8 @@ class ProductsController < ApplicationController
   	else
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => false}, 
-                                                    :product => @product, 
-                                                    :message => "product id#{params[:id]} failed to delete"}}
+  			format.json {render :json => {:metadata => {:success => false, :message => "product id#{params[:id]} failed to delete"}, 
+                                      :product => @product }}
   		end
   	end
   end
@@ -95,16 +109,12 @@ class ProductsController < ApplicationController
       current_user.vote_for(@product)      
       respond_to do |format|
           format.html
-          format.json {render :json => {:metadata => {:success => true},
-                                        :product => @product, 
-                                        :message => "product id:#{params[:id]} voted"}}
+          format.json {render :json => {:metadata => {:success => true, :message => "product id:#{params[:id]} voted"}}}
       end
     else
       respond_to do |format|
           format.html
-          format.json {render :json => {:metadata => {:success => false},
-                                        :product => @product, 
-                                        :message => "already voted on product id:#{params[:id]}"}}
+          format.json {render :json => {:metadata => {:success => false,:message => "already voted on product id:#{params[:id]}"}}}
       end
     end
   end
@@ -115,16 +125,12 @@ class ProductsController < ApplicationController
       current_user.unvote_for(@product)      
       respond_to do |format|
           format.html
-          format.json {render :json => {:metadata => {:success => true},
-                                        :product => @product, 
-                                        :message => "product id:#{params[:id]} unvoted"}}
+          format.json {render :json => {:metadata => {:success => true, :message => "product id:#{params[:id]} unvoted"}}}
       end
     else
       respond_to do |format|
           format.html
-          format.json {render :json => {:metadata => {:success => false},
-                                        :product => @product, 
-                                        :message => "not yet voted on product id:#{params[:id]}"}}
+          format.json {render :json => {:metadata => {:success => false, :message => "not yet voted on product id:#{params[:id]}"}}}
       end
     end
   end
@@ -134,9 +140,8 @@ class ProductsController < ApplicationController
     @users = @product.voters_who_voted
     respond_to do |format|
         format.html
-        format.json {render :json => {:metadata => {:success => true},
-                                      :user => @users, 
-                                      :message => "fetch users vote for product id:#{params[:id]}"}}
+        format.json {render :json => {:metadata => {:success => true, :message => "fetch users vote for product id:#{params[:id]}"},
+                                      :user => @users }}
     end    
   end
 
@@ -144,4 +149,5 @@ class ProductsController < ApplicationController
   def is_voted? (_product)
     current_user.voted_on?(_product)
   end
+
 end
