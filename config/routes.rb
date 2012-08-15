@@ -29,6 +29,10 @@ MolooTemplate::Application.routes.draw do
   match 'products/:id/vote(.format)' => "products#unvote", :via => :delete
   match 'products/:id/voters(.format)' => "products#voters", :via => :get
 
+  #comment
+  match 'products/:id/comment(.format)' => "products#add_comment", :via => :post
+  match 'products/:id/comment(.format)' => "products#destroy_comment", :via => :delete 
+
   match 'photos(.format)' => "photos#create", :via => :post
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete
 
