@@ -17,10 +17,12 @@ MolooTemplate::Application.routes.draw do
 
   match 'products(.format)' => "products#list", :via => :get
   match 'products(.format)' => "products#create", :via => :post
-  match 'products/:id(.format)' => "products#show", :via => :get
-  match 'products/:id(.format)' => "products#destroy", :via => :delete
-  match 'products/:id(.format)' => "products#update", :via => :update  
-  match 'products/mylist(.format)' => "products#mylist", :via => :get
+
+  match 'products/:id(.format)' => "products#show", :via => :get, :constraints => {:id => /\d+/}
+  match 'products/:id(.format)' => "products#destroy", :via => :delete, :constraints => {:id => /\d+/}
+  match 'products/:id(.format)' => "products#update", :via => :update, :constraints => {:id => /\d+/}  
+  match 'products/my_list(.format)' => "products#mylist", :via => :get
+  match 'products/hot_list(.format)' => "products#hot_list", :via => :get
 
   # vote
   match 'products/:id/vote(.format)' => "products#vote", :via => :post

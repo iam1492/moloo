@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   before_filter :set_current_user
 
   def mylist
-  	@products = current_user.products
+  	@products = current_user.products.paginate(:page => params[:page])
   	respond_to do |format|
   		format.html
   		format.json {render :json => {:metadata => {:success => true, :page => params[:page],
@@ -15,7 +15,15 @@ class ProductsController < ApplicationController
   end
 
   def list
-    @products = Product.paginate(:page => params[:page])
+    if params[:categories].nil?
+      @products = Product.paginate(:page => params[:page])
+    else
+      @category_array = params[:categories].split(',').collect!{|t| t.to_s }
+      @category_array.each do |t| 
+        logger.debug t
+      end
+      @products = Product.tagged_with(@category_array).paginate(:page => params[:page])
+    end
     respond_to do |format|
       format.html
       format.json {render :json => {:metadata => {:success => true, :page => params[:page],
@@ -25,18 +33,27 @@ class ProductsController < ApplicationController
     end
   end
 
-  def list_by_category
-    @products = Product.find_by_categories(params[:categories])
+  def hot_list
+    #@products = Product.paginate :page => params[:page], :order => "vote_count DESC"
+    @products = Product.all
+    @products_sorted = @products.sort_by { |item| item.total_vote }.reverse
+
+    respond_to do |format|
+      format.html
+      format.json {render :json => {:metadata => {:success => true, :page => params[:page],
+                                                  :message => "succeed to list all project",
+                                                  :product_count => @products.count},
+                                    :product => @products }}
+    end
   end
 
   def create
-
   	name = params[:name]
   	description = params[:description]
   	price = params[:price] || nil
-    #categories = params[:categories] || nil
-
+    categories = params[:categories] || nil
   	@product = current_user.products.build(:name => name, :description => :description, :price => price)
+    @product.tag_list = categories
   	if @product.save
   		respond_to do |format|
   			format.html

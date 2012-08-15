@@ -3,6 +3,10 @@ gem 'rails', '3.2.7'
 gem 'pg' #change for deploy
 # Vote system
 gem 'thumbs_up'
+
+# To support categories
+gem 'acts-as-taggable-on', '~> 2.3.1'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'

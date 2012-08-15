@@ -1,8 +1,11 @@
 class Product < ActiveRecord::Base
   attr_accessible :description, :name, :price,
-                   :voted, :vote_count, :photolist,
-                   :user_email, :user_name
+                   :voted, :total_vote, :photolist,
+                   :user_email, :user_name, :categories
   acts_as_voteable
+
+  acts_as_taggable
+  acts_as_taggable_on :tags
 
   belongs_to :user
   has_many :photos, dependent: :destroy
@@ -17,7 +20,7 @@ class Product < ActiveRecord::Base
   	User.current.voted_for?(self)
   end
 
-  def vote_count
+  def total_vote
   	self.plusminus
   end
 
@@ -35,11 +38,15 @@ class Product < ActiveRecord::Base
     @user.name
   end
 
+  def categories
+    self.tag_list
+  end
+
   # 필요한 virtual attribute를 추가 하는 법[:voted, :something_more, :more...]
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:voted, :vote_count, :photolist, :user_email, :user_name])
+           [:voted, :total_vote, :photolist, :user_email, :user_name, :categories])
 
     #handed 는 voted로 대체 
     options[:except] = :handed, :user_id
