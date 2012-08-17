@@ -12,21 +12,26 @@ MolooTemplate::Application.routes.draw do
 
   match 'users/list(.format)' => "users#list", :via => :get
   match 'users(.format)' => "users#show", :via => :get
-  match 'users/log_in(.format)' => "sessions#create", :via => :post
-  match 'users/log_out(.format)' => "sessions#destroy", :via => :delete
-
+  match 'users/session(.format)' => "sessions#create", :via => :post
+  match 'users/session(.format)' => "sessions#destroy", :via => :delete
 
   match 'products(.format)' => "products#list", :via => :get
   match 'products(.format)' => "products#create", :via => :post
-  match 'products/:id(.format)' => "products#show", :via => :get
-  match 'products/:id(.format)' => "products#destroy", :via => :delete
-  match 'products/:id(.format)' => "products#update", :via => :update  
-  match 'products/mylist(.format)' => "products#mylist", :via => :get
+
+  match 'products/:id(.format)' => "products#show", :via => :get, :constraints => {:id => /\d+/}
+  match 'products/:id(.format)' => "products#destroy", :via => :delete, :constraints => {:id => /\d+/}
+  match 'products/:id(.format)' => "products#update", :via => :update, :constraints => {:id => /\d+/}  
+  match 'products/my_list(.format)' => "products#mylist", :via => :get
+  match 'products/hot_list(.format)' => "products#hot_list", :via => :get
 
   # vote
   match 'products/:id/vote(.format)' => "products#vote", :via => :post
   match 'products/:id/vote(.format)' => "products#unvote", :via => :delete
   match 'products/:id/voters(.format)' => "products#voters", :via => :get
+
+  #comment
+  match 'products/:id/comment(.format)' => "products#add_comment", :via => :post
+  match 'products/:id/comment(.format)' => "products#destroy_comment", :via => :delete 
 
   match 'photos(.format)' => "photos#create", :via => :post
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete

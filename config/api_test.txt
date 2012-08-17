@@ -1,15 +1,16 @@
 1. 가입하기
 
 POST 
-http://14.63.213.154 /users.json?user[name]=wooram&user[email]=lovefamilydev@gmail.com&user[password]=ekseo00&user[password_confirmation]=ekseo00
+http://14.63.213.154/users.json?user[name]=wooram&user[email]=lovefamilydev@gmail.com&user[password]=ekseo00&user[password_confirmation]=ekseo00
 
 2. 로그인 하기
 POST 
-http://localhost:3000/users/log_in.json?email=iam1494@gmail.com&password=ekseo00
+http://localhost:3000/users/session.json?email=lovefamilydev@gmail.com&password=ekseo00
 
 3. 로그아웃 하기 
 DELETE 
 http://localhost:3000/friends/sign_out.json?email=iam1494@gmail.com
+http://14.63.213.154/users/log_out.json?auth_token=ptjg9GtDpMCSQAqvdXzE
 
 4. Auth test
 GET 
@@ -17,11 +18,11 @@ http://localhost:3000/users.json?auth_token=6zPja98mDxG9bX7xSdqc
 
 5. Product 가져오기
 GET 
-http://localhost:3000/products.json?auth_token=gynGZvjg9KQ3PqY6XdiN
+http://localhost:3000/products.json?auth_token=ptjg9GtDpMCSQAqvdXzE
 
 6. Product 만들기
 POST 
-http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=6zPja98mDxG9bX7xSdqc
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=ptjg9GtDpMCSQAqvdXzE
 
 7. 한개의 Product 가져오기/지우기
 GET 
@@ -32,10 +33,10 @@ http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 
 8. 이미지 업로드
 POST
-http://localhost:3000/photos.json?auth_token=U7Ca6QWKtzaFc41z16qJ
+http://localhost:3000/photos.json?auth_token=ptjg9GtDpMCSQAqvdXzE
 
 curl test
-curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=U7Ca6QWKtzaFc41z16qJ"
+curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=ptjg9GtDpMCSQAqvdXzE"
 
 9. 이미지 삭제
 DELETE
