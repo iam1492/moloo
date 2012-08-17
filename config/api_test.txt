@@ -22,7 +22,7 @@ http://localhost:3000/products.json?auth_token=ptjg9GtDpMCSQAqvdXzE
 
 6. Product 만들기
 POST 
-http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=ptjg9GtDpMCSQAqvdXzE
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=EjzBhnYZpbysxxwFY9qx
 
 7. 한개의 Product 가져오기/지우기
 GET 
@@ -34,6 +34,9 @@ http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
 8. 이미지 업로드
 POST
 http://localhost:3000/photos.json?auth_token=ptjg9GtDpMCSQAqvdXzE
+
+08-17 15:51:12.961: D/LoginTest(12651): jsonStr:{"metadata":{"success":true,"message":"Login Success","auth_token":"TwuEMdqv4WoCssU5zq66"}}
+
 
 curl test
 curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=ptjg9GtDpMCSQAqvdXzE"

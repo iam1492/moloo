@@ -57,7 +57,7 @@ class ProductsController < ApplicationController
   	if @product.save
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => true, :message => "succeed to create product"}}}
+  			format.json {render :json => {:metadata => {:success => true, :message => "succeed to create product"}, :product_id => @product.id}}
   		end
   	else
   		respond_to do |format|
