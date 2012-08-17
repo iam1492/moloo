@@ -31,13 +31,14 @@ MolooTemplate::Application.routes.draw do
 
   #comment
   match 'products/:id/comment(.format)' => "products#add_comment", :via => :post
-  match 'products/:id/comment(.format)' => "products#destroy_comment", :via => :delete 
+  match 'comment/:id(.format)' => "comments#destroy", :via => :delete 
 
-  match 'photos(.format)' => "photos#create", :via => :post
+  #photo
+  match 'products/:id/photos(.format)' => "products#upload_photo", :via => :post
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete
 
-  match 'comments(.format)' => "comments#create", :via => :post
-  match 'comments/:id(.format)' => "comments#destroy", :via => :delete
+  # match 'comments(.format)' => "comments#create", :via => :post
+  # match 'comments/:id(.format)' => "comments#destroy", :via => :delete
 
   # get "products/create"
   # get "products/show"

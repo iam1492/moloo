@@ -24,8 +24,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-  	@product = Product.find(:product_id)
-  	@comment = @product.comments.find(params[:id])
+  	@comment = Comment.find(params[:id])
   	if @comment.destroy
   		respond_to do |format|
   			format.html

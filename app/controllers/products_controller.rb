@@ -93,23 +93,19 @@ class ProductsController < ApplicationController
     if @product.nil?
       respond_to do |format|
         format.html
-        format.json {render :json => {:metadata => {:success => true, :message => "fail to find product id:#{params[:id]}"},
-                                      :product => @product }}
+        format.json {render :json => {:metadata => {:success => true, :message => "fail to find product id:#{params[:id]}"}}}
       end
       return 
     end
   	if @product.destroy
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => true},
-                                      :product => @product, 
-                                      :message => "product id:#{params[:id]} deleted"}}
+  			format.json {render :json => {:metadata => {:success => true, :message => "product id:#{params[:id]} deleted"}}}
   		end
   	else
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => false, :message => "product id#{params[:id]} failed to delete"}, 
-                                      :product => @product }}
+  			format.json {render :json => {:metadata => {:success => false, :message => "product id#{params[:id]} failed to delete"}}}
   		end
   	end
   end
@@ -198,6 +194,30 @@ class ProductsController < ApplicationController
         format.json {render :json => {:metadata => {:success => true, :message => "fetch users vote for product id:#{params[:id]}"},
                                       :user => @users }}
     end    
+  end
+
+  def upload_photo
+    @product = Product.find(params[:id])
+    @photo = @product.photos.build(:photo => params[:photo])
+    if @photo.save
+      @photo.save
+      respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => true}, 
+                                      :photo => @photo, 
+                                      :product_id => @product.id,
+                                      #:photo_url => @photo.photo.url,                                                                      
+                                      :message => "succeed to create photo"}}
+      end
+    else
+      respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => false}, 
+                                      :photo => @photo, 
+                                      :product_id => @product.id,
+                                      :message => "failed to create photo"}}
+      end
+    end
   end
 
   private
