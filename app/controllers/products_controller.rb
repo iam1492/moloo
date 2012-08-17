@@ -8,7 +8,6 @@ class ProductsController < ApplicationController
   	respond_to do |format|
   		format.html
   		format.json {render :json => {:metadata => {:success => true}, 
-                                    # :uid => current_user.id,
                                     :product => @product,                                                                
                                     :message => "succeed to list all project"}}
   	end
@@ -19,7 +18,6 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {render :json => {:metadata => {:success => true}, 
-                                    # :uid => current_user.id,
                                     :product => @products, 
                                     :page => params[:page],                                                                         
                                     :message => "succeed to list all project"}}
