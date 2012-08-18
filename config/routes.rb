@@ -10,8 +10,11 @@ MolooTemplate::Application.routes.draw do
   devise_for :users
   #resources :users, :only => [:show, :index]
 
-  match 'users/list(.format)' => "users#list", :via => :get
-  match 'users(.format)' => "users#show", :via => :get
+  match 'users/:id(.format)' => "users#show", :via => :get
+  match 'users(.format)' => "users#list", :via => :get
+  match 'users/:id/follow(.format)' => "users#follow", :via => :post
+  match 'users/:id/unfollow(.format)' => "users#unfollow", :via => :post
+  
   match 'users/session(.format)' => "sessions#create", :via => :post
   match 'users/session(.format)' => "sessions#destroy", :via => :delete
 
