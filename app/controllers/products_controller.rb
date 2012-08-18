@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   before_filter :set_current_user
 
   def mylist
-  	@products = current_user.products.paginate(:page => params[:page])
+  	@products = current_user.products.paginate(:page => params[:page], :per_page => 10)
   	respond_to do |format|
   		format.html
   		format.json {render :json => {:metadata => {:success => true, :page => params[:page],
@@ -16,13 +16,15 @@ class ProductsController < ApplicationController
 
   def list
     if params[:categories].nil?
-      @products = Product.paginate(:page => params[:page])
+      @products = Product.paginate(:page => params[:page], :per_page => 10)
     else
       @category_array = params[:categories].split(',').collect!{|t| t.to_s }
+
+      # degug: to see the category 
       @category_array.each do |t| 
         logger.debug t
       end
-      @products = Product.tagged_with(@category_array).paginate(:page => params[:page])
+      @products = Product.tagged_with(@category_array).paginate(:page => params[:page], :per_page => 10)
     end
     respond_to do |format|
       format.html
@@ -34,16 +36,17 @@ class ProductsController < ApplicationController
   end
 
   def hot_list
-    #@products = Product.paginate :page => params[:page], :order => "vote_count DESC"
-    @products = Product.all
-    @products_sorted = @products.sort_by { |item| item.total_vote }.reverse
+    # @products = Product.paginate :page => params[:page], :order => "vote_count DESC"
+    # @products = Product.all
+    # @products_sorted = @products.sort_by { |item| item.total_vote }.reverse
 
+    @products_sorted = Product.order("handed DESC").paginate(:page => params[:page], :per_page => 10)
     respond_to do |format|
       format.html
       format.json {render :json => {:metadata => {:success => true, :page => params[:page],
                                                   :message => "succeed to list all project",
-                                                  :product_count => @products.count},
-                                    :product => @products }}
+                                                  :product_count => @products_sorted.count},
+                                    :product => @products_sorted }}
     end
   end
 
@@ -157,7 +160,11 @@ class ProductsController < ApplicationController
     #@product = current_user.products.find(params[:id])
     @product = Product.find(params[:id])
     if !current_user.voted_on?(@product)
-      current_user.vote_for(@product)      
+      current_user.vote_for(@product)    
+
+      #save total vote  
+      @product.handed = @product.total_vote
+      @product.save
       respond_to do |format|
           format.html
           format.json {render :json => {:metadata => {:success => true, :message => "product id:#{params[:id]} voted"}}}
@@ -173,7 +180,11 @@ class ProductsController < ApplicationController
   def unvote
     @product = Product.find(params[:id])
     if current_user.voted_on?(@product)
-      current_user.unvote_for(@product)      
+      current_user.unvote_for(@product)   
+
+      #save total vote  
+      @product.handed = @product.total_vote
+      @product.save   
       respond_to do |format|
           format.html
           format.json {render :json => {:metadata => {:success => true, :message => "product id:#{params[:id]} unvoted"}}}

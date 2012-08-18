@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  attr_accessible :description, :name, :price,
+  attr_accessible :description, :name, :price, :handed,
                    :voted, :total_vote, :photolist,
                    :user_email, :user_name, :categories
   acts_as_voteable
