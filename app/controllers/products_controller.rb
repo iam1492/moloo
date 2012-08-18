@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   before_filter :authenticate_user!, :except => [:list, :show ]
   before_filter :set_current_user
 
-  def mylist
+  def my_list
   	@products = current_user.products.paginate(:page => params[:page], :per_page => 10)
   	respond_to do |format|
   		format.html
@@ -14,8 +14,25 @@ class ProductsController < ApplicationController
   	end
   end
 
+  # 내가 핸디드한 아이템 리스트 구현 
+  # def my_favorite
+  #   @products = Product.products.paginate(:page => params[:page], :per_page => 10)
+  #   respond_to do |format|
+  #     format.html
+  #     format.json {render :json => {:metadata => {:success => true, :page => params[:page],
+  #                                                 :message => "succeed to list all project",
+  #                                                 :total_count => @products.count},
+  #                                   :product => @products}}
+  #   end
+  # end
+
   def list
-    if params[:categories].nil?
+
+    if (params[:email] != nil)
+      logger.debug "find by email"
+      @user = User.find_by_email(params[:email])
+      @products = @user.products.paginate(:page => params[:page], :per_page => 10)
+    elsif (params[:categories] != nil)
       @products = Product.paginate(:page => params[:page], :per_page => 10)
     else
       @category_array = params[:categories].split(',').collect!{|t| t.to_s }
