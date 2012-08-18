@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :set_current_user
 
   def list
     #authorize! :index, @user, :message => 'Not authorized as an administrator.'
@@ -17,11 +18,34 @@ class UsersController < ApplicationController
     	format.html
     	format.json { render :json => { :metadata => {:success => true},
                                       :users => @user, 
-                                      :products => @user.products,
+                                      #:products => @user.products,
                                       :following => current_user.following?(@user)}}
     end
   end
 
+  def followings
+    @following_users = current_user.followed_users
+    if @following_users != nil
+      respond_to do |format|
+      format.html
+      format.json { render :json => { :metadata => {:success => true},
+                                      :users => @following_users}}
+      end
+    end
+  end
+
+  def followers
+    @follower_users = current_user.followers
+    if @follower_users != nil
+      respond_to do |format|
+      format.html
+      format.json { render :json => { :metadata => {:success => true},
+                                      :users => @follower_users}}
+      end
+    end
+  end
+
+  #follow user /users/:id/follow
   def follow
     @user = User.find(params[:id])
     current_user.follow!(@user)
@@ -31,6 +55,7 @@ class UsersController < ApplicationController
     end
   end
 
+  #follow user /users/:id/unfollow
   def unfollow
     @user = User.find(params[:id])
     current_user.unfollow!(@user)

@@ -33,15 +33,14 @@ class ProductsController < ApplicationController
       @user = User.find_by_email(params[:email])
       @products = @user.products.paginate(:page => params[:page], :per_page => 10)
     elsif (params[:categories] != nil)
-      @products = Product.paginate(:page => params[:page], :per_page => 10)
-    else
-      @category_array = params[:categories].split(',').collect!{|t| t.to_s }
-
+      @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
       # degug: to see the category 
       @category_array.each do |t| 
         logger.debug t
       end
       @products = Product.tagged_with(@category_array).paginate(:page => params[:page], :per_page => 10)
+    else
+      @products = Product.paginate(:page => params[:page], :per_page => 10)
     end
     respond_to do |format|
       format.html

@@ -17,7 +17,11 @@ class Product < ActiveRecord::Base
   validates :description, presence: true, length: { maximum: 180 }
 
   def voted
-  	User.current.voted_for?(self)
+    if User.current.nil?
+      logger.debug "Error !!!!  no current user"
+    else
+  	  User.current.voted_for?(self)
+    end
   end
 
   def total_vote

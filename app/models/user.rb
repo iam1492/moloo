@@ -26,7 +26,11 @@ class User < ActiveRecord::Base
   end
 
   def following?(other_user)
-    relationships.find_by_followed_id(other_user.id)
+    if relationships.find_by_followed_id(other_user.id).nil?
+      false
+    else
+      true
+    end
   end
 
   def follow!(other_user)
@@ -37,13 +41,29 @@ class User < ActiveRecord::Base
     relationships.find_by_followed_id(other_user).destroy
   end
 
-  # def as_json options=nil
-  #   options ||= {}
-  #   options[:methods] = ((options[:methods] || []) + 
-  #          [:voted])
+  def following_count
+    self.followed_users.count
+  end
 
-  #   #handed 는 voted로 대체 
-  #   #options[:except] = :user_id
-  #   super options
-  # end
+  def follower_count
+    self.followers.count
+  end
+
+  def product_count
+    self.products.count
+  end
+
+  def voted_count
+    self.vote_count :up
+  end
+
+  def as_json options=nil
+    options ||= {}
+    options[:methods] = ((options[:methods] || []) + 
+           [:following_count, :follower_count, :product_count, :voted_count])
+
+    #handed 는 voted로 대체 
+    #options[:except] = :user_id
+    super options
+  end
 end

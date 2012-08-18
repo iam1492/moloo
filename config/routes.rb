@@ -1,6 +1,6 @@
 MolooTemplate::Application.routes.draw do
-  get "comments/create"
 
+  get "comments/create"
   get "comments/destory"
 
   authenticated :user do
@@ -10,11 +10,14 @@ MolooTemplate::Application.routes.draw do
   devise_for :users
   #resources :users, :only => [:show, :index]
 
-  match 'users/:id(.format)' => "users#show", :via => :get
+  match 'users/:id(.format)' => "users#show", :via => :get, :constraints => {:id => /\d+/}
   match 'users(.format)' => "users#list", :via => :get
-  match 'users/:id/follow(.format)' => "users#follow", :via => :post
-  match 'users/:id/unfollow(.format)' => "users#unfollow", :via => :post
-  
+
+  match 'users/followings(.format)' => "users#followings", :via => :get
+  match 'users/followers(.format)' => "users#followers", :via => :get
+  match 'users/:id/follow(.format)' => "users#follow", :via => :post, :constraints => {:id => /\d+/}
+  match 'users/:id/unfollow(.format)' => "users#unfollow", :via => :post, :constraints => {:id => /\d+/}
+
   match 'users/session(.format)' => "sessions#create", :via => :post
   match 'users/session(.format)' => "sessions#destroy", :via => :delete
 
@@ -28,17 +31,17 @@ MolooTemplate::Application.routes.draw do
   match 'products/hot_list(.format)' => "products#hot_list", :via => :get
 
   # vote
-  match 'products/:id/vote(.format)' => "products#vote", :via => :post
-  match 'products/:id/vote(.format)' => "products#unvote", :via => :delete
-  match 'products/:id/voters(.format)' => "products#voters", :via => :get
+  match 'products/:id/vote(.format)' => "products#vote", :via => :post, :constraints => {:id => /\d+/}
+  match 'products/:id/vote(.format)' => "products#unvote", :via => :delete, :constraints => {:id => /\d+/}
+  match 'products/:id/voters(.format)' => "products#voters", :via => :get, :constraints => {:id => /\d+/}
 
   #comment
-  match 'products/:id/comment(.format)' => "products#add_comment", :via => :post
-  match 'comment/:id(.format)' => "comments#destroy", :via => :delete 
+  match 'products/:id/comment(.format)' => "products#add_comment", :via => :post, :constraints => {:id => /\d+/}
+  match 'comment/:id(.format)' => "comments#destroy", :via => :delete, :constraints => {:id => /\d+/}
 
   #photo
-  match 'products/:id/photos(.format)' => "products#upload_photo", :via => :post
-  match 'photos/:id(.format)' => "photos#destroy", :via => :delete
+  match 'products/:id/photos(.format)' => "products#upload_photo", :via => :post, :constraints => {:id => /\d+/}
+  match 'photos/:id(.format)' => "photos#destroy", :via => :delete, :constraints => {:id => /\d+/}
 
   # match 'comments(.format)' => "comments#create", :via => :post
   # match 'comments/:id(.format)' => "comments#destroy", :via => :delete
