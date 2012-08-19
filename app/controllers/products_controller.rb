@@ -100,7 +100,6 @@ class ProductsController < ApplicationController
     		format.json {render :json => {:metadata => {:success => true, :message => "succeed to show product", :photo_count => @photos.count, :comment_count => @comments.count },
                                       :product => @product,  
                                       :categories => @product.categories,                                                
-                                      :photos => @photos,
                                       :comments => @comments}}
     	end
     end
