@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :profile,
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
   before_save :ensure_authentication_token
 
@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
                                    class_name: "Relationship",
                                    dependent: :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
+
+  has_attached_file :profile, :style => {:medium => "480x480>", :thumb => "100x100>"}
 
   def self.current
     Thread.current[:user]
@@ -57,10 +59,18 @@ class User < ActiveRecord::Base
     self.vote_count :up
   end
 
+  def profile_thumbnail_path
+    self.profile.url(:thumb)
+  end
+
+  def profile_medium_path
+    self.profile.url(:medium)   
+  end
+
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:following_count, :follower_count, :product_count, :voted_count])
+           [:following_count, :follower_count, :product_count, :voted_count,:profile_thumbnail_path, :profile_medium_path])
 
     #handed 는 voted로 대체 
     #options[:except] = :user_id
