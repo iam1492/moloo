@@ -1,11 +1,17 @@
 1. 가입하기
 
 POST 
-http://14.63.213.154/users.json?user[name]=wooram&user[email]=lovefamilydev@gmail.com&user[password]=ekseo00&user[password_confirmation]=ekseo00
+http://localhost:3000/users.json?user[name]=wooram&user[email]=lovefamilydev@gmail.com&user[password]=ekseo00&user[password_confirmation]=ekseo00
 
 2. 로그인 하기
 POST 
 http://localhost:3000/users/session.json?email=lovefamilydev@gmail.com&password=ekseo00
+
+iam1492=TwuEMdqv4WoCssU5zq66
+lovefamilydev=ciGMxXuds6zLpPArsszq
+iam1494=U7Ca6QWKtzaFc41z16qJ
+
+
 
 3. 로그아웃 하기 
 DELETE 
@@ -18,7 +24,7 @@ http://localhost:3000/users.json?auth_token=6zPja98mDxG9bX7xSdqc
 
 5. Product 가져오기
 GET 
-http://localhost:3000/products.json?auth_token=ptjg9GtDpMCSQAqvdXzE
+http://localhost:3000/products.json?auth_token=2RAw6EFgoaUvtyk7wdwq
 
 6. Product 만들기
 POST 
@@ -55,7 +61,7 @@ http://localhost:3000/comments.json?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
 
 12. 특정 product 에 vote 하기
 POST
-http://localhost:3000/products/1/vote.json?auth_token=1iPnqnwVUvqPpS6ZKss3
+http://localhost:3000/products/1/vote.json?auth_token=dQT8vPYWqupyxsM8oU7R
 
 13. 특정 product 에 unvote 하기
 DELETE
@@ -70,7 +76,7 @@ http://curl.haxx.se/docs/httpscripting.html
 
 
 로컬 테스트
-curl --form photo=@Fridge.jpg --form press=OK "http://localhost:3000/photos.json?product_id=1&auth_token=1iPnqnwVUvqPpS6ZKss3"
+curl --form photo=@Fridge.jpg --form press=OK "http://localhost:3000/products/3/photos.json?product_id=1&auth_token=2RAw6EFgoaUvtyk7wdwq"
 
 http://localhost:3000/products/1.json?auth_token=1iPnqnwVUvqPpS6ZKss3
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120821154039) do
+ActiveRecord::Schema.define(:version => 20120823151432) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20120821154039) do
     t.datetime "photo_updated_at"
     t.integer  "product_id"
     t.string   "photo_url"
+    t.text     "photo_meta"
   end
 
   create_table "products", :force => true do |t|
