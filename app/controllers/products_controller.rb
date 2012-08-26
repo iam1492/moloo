@@ -14,6 +14,32 @@ class ProductsController < ApplicationController
   	end
   end
 
+  # def new_list
+  #   @lastproduct = User.find(params[:id])
+    
+  #   if (params[:email] != nil)
+  #     logger.debug "find by email"
+  #     @users = User.where("created_at > '#{@lastuser.created_at}' and email = '#{params[:email]}'").limit(20)
+  #     @products = @user.products.paginate(:page => params[:page], :per_page => 10)
+  #   elsif (params[:categories] != nil)
+  #     @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
+  #     # degug: to see the category 
+  #     @category_array.each do |t| 
+  #       logger.debug t
+  #     end
+  #     @products = Product.tagged_with(@category_array).paginate(:page => params[:page], :per_page => 10)
+  #   else
+  #     @products = Product.paginate(:page => params[:page], :per_page => 10)
+  #   end
+  #   respond_to do |format|
+  #     format.html
+  #     format.json {render :json => {:metadata => {:success => true, :page => params[:page],
+  #                                                 :message => "succeed to list all project",
+  #                                                 :product_count => @products.count},
+  #                                   :product => @products }}
+  #   end
+  # end
+
   # 내가 핸디드한 아이템 리스트 구현 
   # def my_favorite
   #   @products = Product.products.paginate(:page => params[:page], :per_page => 10)
