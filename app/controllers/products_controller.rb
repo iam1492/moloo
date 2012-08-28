@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:list, :show ]
+  before_filter :authenticate_user!, :except => [:list, :show, :new_list, :old_list ]
   before_filter :set_current_user
 
   def my_list
@@ -14,31 +14,32 @@ class ProductsController < ApplicationController
   	end
   end
 
-  # def new_list
-  #   @lastproduct = User.find(params[:id])
-    
-  #   if (params[:email] != nil)
-  #     logger.debug "find by email"
-  #     @users = User.where("created_at > '#{@lastuser.created_at}' and email = '#{params[:email]}'").limit(20)
-  #     @products = @user.products.paginate(:page => params[:page], :per_page => 10)
-  #   elsif (params[:categories] != nil)
-  #     @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
-  #     # degug: to see the category 
-  #     @category_array.each do |t| 
-  #       logger.debug t
-  #     end
-  #     @products = Product.tagged_with(@category_array).paginate(:page => params[:page], :per_page => 10)
-  #   else
-  #     @products = Product.paginate(:page => params[:page], :per_page => 10)
-  #   end
-  #   respond_to do |format|
-  #     format.html
-  #     format.json {render :json => {:metadata => {:success => true, :page => params[:page],
-  #                                                 :message => "succeed to list all project",
-  #                                                 :product_count => @products.count},
-  #                                   :product => @products }}
-  #   end
-  # end
+  def new_list
+    if (params[:id].nil?)
+      @products = Product.loadfirst
+
+      if (params[:categories] != nil)
+        @category_array = params[:categories].split(',').collect!{|t| t.to_s }   
+        @products = Product.loadfirst.tagged_with(@category_array)
+      end
+    else 
+      if (params[:categories] != nil)
+        @lastproduct = Product.find(params[:id])
+        @category_array = params[:categories].split(',').collect!{|t| t.to_s }   
+        @products = Product.loadnew(@lastproduct.created_at).tagged_with(@category_array)
+      else
+        @lastproduct = Product.find(params[:id])
+        @products = Product.loadnew(@lastproduct.created_at)
+      end
+    end
+    respond_to do |format|
+      format.html
+      format.json {render :json => {:metadata => {:success => true,
+                                                  :message => "succeed to fetch new products",
+                                                  :product_count => @products.count},
+                                    :product => @products }}
+    end
+  end
 
   # 내가 핸디드한 아이템 리스트 구현 
   # def my_favorite
@@ -52,21 +53,41 @@ class ProductsController < ApplicationController
   #   end
   # end
 
+   def old_list
+    @firstproduct = Product.find(params[:id])
+    
+    if (params[:categories] != nil)
+      @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
+      # degug: to see the category 
+      @products = Product.loadold(@firstproduct.created_at).tagged_with(@category_array)
+    else
+      #@products = Product.where("created_at > '#{@lastuser.created_at}'").limit(20)
+      @products = Product.loadold(@firstproduct.created_at)
+    end
+    respond_to do |format|
+      format.html
+      format.json {render :json => {:metadata => {:success => true,
+                                                  :message => "succeed to fetch old products",
+                                                  :product_count => @products.count},
+                                    :product => @products }}
+    end
+  end
+
   def list
 
     if (params[:email] != nil)
       logger.debug "find by email"
       @user = User.find_by_email(params[:email])
-      @products = @user.products.paginate(:page => params[:page], :per_page => 10)
+      @products = @user.products.paginate(:page => params[:page], :per_page => 20)
     elsif (params[:categories] != nil)
       @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
       # degug: to see the category 
       @category_array.each do |t| 
         logger.debug t
       end
-      @products = Product.tagged_with(@category_array).paginate(:page => params[:page], :per_page => 10)
+      @products = Product.tagged_with(@category_array).paginate(:page => params[:page], :per_page => 20)
     else
-      @products = Product.paginate(:page => params[:page], :per_page => 10)
+      @products = Product.paginate(:page => params[:page], :per_page => 20)
     end
     respond_to do |format|
       format.html

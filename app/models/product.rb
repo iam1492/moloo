@@ -16,6 +16,18 @@ class Product < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 80 }
   validates :description, presence: true, length: { maximum: 180 }
 
+  def self.loadnew(created_at)
+    where("products.created_at > ?", created_at).limit(20)
+  end
+
+  def self.loadold(created_at)
+    where("products.created_at < ?", created_at).limit(20)
+  end
+
+  def self.loadfirst
+    limit(20)
+  end
+
   def voted
     if User.current.nil?
       logger.debug "Error !!!!  no current user"
