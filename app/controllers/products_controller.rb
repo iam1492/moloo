@@ -15,8 +15,10 @@ class ProductsController < ApplicationController
   end
 
   def new_list
+    @tempproduct = Product.last
+
     if (params[:id].nil?)
-      @products = Product.loadfirst
+      @products = Product.loadfirst.reverse
 
       if (params[:categories] != nil)
         @category_array = params[:categories].split(',').collect!{|t| t.to_s }   
@@ -36,7 +38,8 @@ class ProductsController < ApplicationController
       format.html
       format.json {render :json => {:metadata => {:success => true,
                                                   :message => "succeed to fetch new products",
-                                                  :product_count => @products.count},
+                                                  :product_count => @products.count,
+                                                  :more_product => has_more_new?(@tempproduct, @products.last)},
                                     :product => @products }}
     end
   end
@@ -54,21 +57,23 @@ class ProductsController < ApplicationController
   # end
 
    def old_list
+    @tempproduct = Product.first
     @firstproduct = Product.find(params[:id])
     
     if (params[:categories] != nil)
       @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
       # degug: to see the category 
-      @products = Product.loadold(@firstproduct.created_at).tagged_with(@category_array)
+      @products = Product.loadold(@firstproduct.created_at).tagged_with(@category_array).reverse
     else
       #@products = Product.where("created_at > '#{@lastuser.created_at}'").limit(20)
-      @products = Product.loadold(@firstproduct.created_at)
+      @products = Product.loadold(@firstproduct.created_at).reverse
     end
     respond_to do |format|
       format.html
       format.json {render :json => {:metadata => {:success => true,
                                                   :message => "succeed to fetch old products",
-                                                  :product_count => @products.count},
+                                                  :product_count => @products.count,
+                                                  :more_product => has_more_old?(@tempproduct, @products.first)},
                                     :product => @products }}
     end
   end
@@ -296,6 +301,27 @@ class ProductsController < ApplicationController
   private
   def is_voted? (_product)
     current_user.voted_on?(_product)
+  end
+
+  def has_more_new? (last_item, last_item_loaded)
+    if (last_item.nil? || last_item_loaded.nil?)
+      return false
+    end
+    if last_item.id > last_item_loaded.id
+      true
+    else
+      false
+    end
+  end
+  def has_more_old? (first_item, first_item_loaded)
+    if (first_item.nil? || first_item_loaded.nil?)
+      return false
+    end
+    if first_item.id < first_item_loaded.id
+      true
+    else
+      false
+    end
   end
 
 end

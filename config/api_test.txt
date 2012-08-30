@@ -1,15 +1,17 @@
 1. 가입하기
 
 POST 
-http://localhost:3000/users.json?user[name]=wooram&user[email]=lovefamilydev@gmail.com&user[password]=ekseo00&user[password_confirmation]=ekseo00
+http://14.63.213.154/users.json?user[name]=wooram&user[email]=moloo_test_1@gmail.com&user[password]=meeple&user[password_confirmation]=meeple
 
 2. 로그인 하기
 POST 
-http://localhost:3000/users/session.json?email=lovefamilydev@gmail.com&password=ekseo00
+http://localhost:3000/users/session.json?email=iam1492@gmail.com&password=ekseo00
 
-iam1492=TwuEMdqv4WoCssU5zq66
+iam1492=dQT8vPYWqupyxsM8oU7R
 lovefamilydev=ciGMxXuds6zLpPArsszq
 iam1494=U7Ca6QWKtzaFc41z16qJ
+
+ciGMxXuds6zLpPArsszq
 
 
 
@@ -24,7 +26,7 @@ http://localhost:3000/users.json?auth_token=6zPja98mDxG9bX7xSdqc
 
 5. Product 가져오기
 GET 
-http://localhost:3000/products.json?auth_token=2RAw6EFgoaUvtyk7wdwq
+http://localhost:3000/products.json?auth_token=6JiWyqpusuJDvwcqpdXV
 
 6. Product 만들기
 POST 
