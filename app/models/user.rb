@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :authentication_token
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :authentication_token, :seller
   has_many :products, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
@@ -67,10 +67,20 @@ class User < ActiveRecord::Base
     self.profile.url(:medium)   
   end
 
+  def is_seller
+    if self.seller.nil?
+      false
+    else
+      self.seller
+    end
+  end
+
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:following_count, :follower_count, :product_count, :voted_count,:profile_thumbnail_path, :profile_medium_path])
+           [:following_count, :follower_count, :product_count, 
+            :voted_count,:profile_thumbnail_path, :profile_medium_path,
+            :is_seller])
 
     #handed 는 voted로 대체 
     #options[:except] = :user_id

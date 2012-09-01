@@ -54,6 +54,15 @@ class Product < ActiveRecord::Base
     @user.name
   end
 
+  def is_seller_product
+    @user = User.find(user_id)
+    if @user.seller.nil?
+      false
+    else
+      @user.seller
+    end
+  end
+
   def categories
     self.tag_list
   end
@@ -62,7 +71,8 @@ class Product < ActiveRecord::Base
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:voted, :total_vote, :photolist, :user_email, :user_name, :categories])
+           [:voted, :total_vote, :photolist, :is_seller_product,
+            :user_email, :user_name, :categories])
 
     #handed 는 voted로 대체 
     options[:except] = :handed, :user_id
