@@ -34,7 +34,7 @@ class Photo < ActiveRecord::Base
 
     #handed 는 voted로 대체 
     options[:except] = ((options[:except] || []) + [:updated_at, :product_id, :photo_url, 
-                                                    :photo_file_name, :photo_file_size, 
+                                                    :photo_file_name, :photo_file_size, :photo_meta,
                                                     :photo_content_type, :photo_updated_at])
     super options
   end
