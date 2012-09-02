@@ -16,16 +16,16 @@ class Product < ActiveRecord::Base
   validates :name, presence: true, length: { maximum: 80 }
   validates :description, presence: true, length: { maximum: 180 }
 
-  def self.loadnew(created_at)
-    where("products.created_at > ?", created_at).order("products.created_at ASC").limit(20)
+  def self.loadnew(created_at, is_seller)
+    where("products.created_at > ?", created_at).joins("LEFT OUTER JOIN users ON users.id = products.user_id").where("users.seller = ?", is_seller).order("products.created_at ASC").limit(20)
   end
 
-  def self.loadold(created_at)
-    where("products.created_at < ?", created_at).order("products.created_at DESC").limit(20)
+  def self.loadold(created_at, is_seller)
+    where("products.created_at < ?", created_at).joins("LEFT OUTER JOIN users ON users.id = products.user_id").where("users.seller = ?", is_seller).order("products.created_at DESC").limit(20)
   end
 
-  def self.loadfirst
-    order("products.created_at DESC").limit(20)
+  def self.loadfirst(is_seller)
+    joins("LEFT OUTER JOIN users ON users.id = products.user_id").where("users.seller = ?",is_seller).order("products.created_at DESC").limit(20)
   end
 
   def voted
@@ -54,7 +54,7 @@ class Product < ActiveRecord::Base
     @user.name
   end
 
-  def is_seller_product
+  def seller
     @user = User.find(user_id)
     if @user.seller.nil?
       false
@@ -71,7 +71,7 @@ class Product < ActiveRecord::Base
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:voted, :total_vote, :photolist, :is_seller_product,
+           [:voted, :total_vote, :photolist, :seller,
             :user_email, :user_name, :categories])
 
     #handed 는 voted로 대체 

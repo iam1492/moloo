@@ -16,22 +16,26 @@ class ProductsController < ApplicationController
 
   def new_list
     @tempproduct = Product.last
+    @type_seller = params[:seller]
+    if (@type_seller.nil?)
+      @type_seller = false
+    end
 
     if (params[:id].nil?)
-      @products = Product.loadfirst.reverse
+      @products = Product.loadfirst(@type_seller).reverse
 
       if (params[:categories] != nil)
         @category_array = params[:categories].split(',').collect!{|t| t.to_s }   
-        @products = Product.loadfirst.tagged_with(@category_array)
+        @products = Product.loadfirst(@type_seller).tagged_with(@category_array)
       end
     else 
       if (params[:categories] != nil)
         @lastproduct = Product.find(params[:id])
         @category_array = params[:categories].split(',').collect!{|t| t.to_s }   
-        @products = Product.loadnew(@lastproduct.created_at).tagged_with(@category_array)
+        @products = Product.loadnew(@lastproduct.created_at,@type_seller).tagged_with(@category_array)
       else
         @lastproduct = Product.find(params[:id])
-        @products = Product.loadnew(@lastproduct.created_at)
+        @products = Product.loadnew(@lastproduct.created_at,@type_seller)
       end
     end
     respond_to do |format|
@@ -59,14 +63,18 @@ class ProductsController < ApplicationController
    def old_list
     @tempproduct = Product.first
     @firstproduct = Product.find(params[:id])
+    @type_seller = params[:seller]
+    if (@type_seller.nil?)
+      @type_seller = false
+    end
     
     if (params[:categories] != nil)
       @category_array = params[:categories].split(',').collect!{|t| t.to_s } 
       # degug: to see the category 
-      @products = Product.loadold(@firstproduct.created_at).tagged_with(@category_array).reverse
+      @products = Product.loadold(@firstproduct.created_at, @type_seller).tagged_with(@category_array).reverse
     else
       #@products = Product.where("created_at > '#{@lastuser.created_at}'").limit(20)
-      @products = Product.loadold(@firstproduct.created_at).reverse
+      @products = Product.loadold(@firstproduct.created_at, @type_seller).reverse
     end
     respond_to do |format|
       format.html

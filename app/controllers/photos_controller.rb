@@ -6,7 +6,7 @@ class PhotosController < ApplicationController
   	@photo = @product.photos.build(:photo => params[:photo])
     if @photo.save
       #@photo.photo_url = @photo.photo.url
-      @photo.save
+      #@photo.save
       respond_to do |format|
   		  format.html
   		  format.json {render :json => {:metadata => {:success => true}, 
