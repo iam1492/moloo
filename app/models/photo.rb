@@ -1,5 +1,5 @@
 class Photo < ActiveRecord::Base
-  attr_accessible :photo, :photo_url#, :photo_path, :photo_thumbnail_path, :photo_medium_path
+  attr_accessible :photo, :photo_url
   has_attached_file :photo, :styles => { :medium => "720x", :thumb => "100x100" }
   belongs_to :product
 

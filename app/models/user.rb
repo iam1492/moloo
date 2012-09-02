@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :authentication_token, :seller
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :authentication_token, :seller, :profile
   has_many :products, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
                                    dependent: :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
 
-  has_attached_file :profile, :style => {:medium => "480x480>", :thumb => "100x100>"}
+  has_attached_file :profile, :styles => {:medium => "480x480", :thumb => "100x100"}
 
   def self.current
     Thread.current[:user]
