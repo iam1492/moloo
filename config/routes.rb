@@ -45,6 +45,12 @@ MolooTemplate::Application.routes.draw do
   match 'products/:id/photos(.format)' => "products#upload_photo", :via => :post, :constraints => {:id => /\d+/}
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete, :constraints => {:id => /\d+/}
 
+  #facebook session
+  match 'users/fb/session(.format)' => "fb_sessions#create_or_login", :via => :post
+
+  #facebook friends_search
+  match 'users/fb/search(.format)' => "users#fb_friends", :via => :get
+
   # match 'comments(.format)' => "comments#create", :via => :post
   # match 'comments/:id(.format)' => "comments#destroy", :via => :delete
 

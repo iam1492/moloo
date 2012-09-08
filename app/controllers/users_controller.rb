@@ -17,9 +17,7 @@ class UsersController < ApplicationController
     respond_to do |format|
     	format.html
     	format.json { render :json => { :metadata => {:success => true},
-                                      :users => @user, 
-                                      #:products => @user.products,
-                                      :following => current_user.following?(@user)}}
+                                      :users => @user}}
     end
   end
 
@@ -46,6 +44,55 @@ class UsersController < ApplicationController
                                                     :message => "succeed to fetch following users", 
                                                     :total_count => @following_users.length},
                                       :users => @following_users}}
+      end
+    end
+  end
+
+  def fb_friends
+
+    if (current_user.fb_access_token.nil?)
+      respond_to do |format|
+      format.html
+      format.json { render :json => { :metadata => {:success => false,
+                                      :message => "not authenticated by facebook"}}}
+      end
+    end
+
+    @graph = Koala::Facebook::API.new(current_user.fb_access_token)
+    @friends = @graph.get_connections("me", "friends")
+
+    @friends_array = []
+
+    @friends.each do |friend|
+      @friends_array << friend['id']
+    end
+
+    logger.debug @friends_array
+
+    if (@friends_array != nil && @friends_array.length > 0)
+      @fb_friends = User.find_all_by_fb_id(@friends_array)
+    else
+      respond_to do |format|
+      format.html
+      format.json { render :json => { :metadata => {:success => false,
+                                      :message => "no facebook friends found"}}}
+      end
+    end
+
+    if (@fb_friends != nil && @fb_friends.length > 0)
+      respond_to do |format|
+      format.html
+      format.json { render :json => { :metadata => {:success => true,
+                                      :message => "succeed to fetch following users", 
+                                      :total_count => @fb_friends.length},
+                                      :users => @fb_friends}}
+      end
+    else
+      respond_to do |format|
+      format.html
+      format.json { render :json => { :metadata => {:success => true,
+                                      :message => "no user found",
+                                      :total_count => 0}}}
       end
     end
   end

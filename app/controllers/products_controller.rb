@@ -17,10 +17,11 @@ class ProductsController < ApplicationController
   def new_list
     @tempproduct = Product.last
     @type_seller = params[:seller]
-    if (@type_seller.nil?)
+    if (@type_seller.nil? || @type_seller.length == 0)
       @type_seller = false
     end
 
+    logger.debug @type_seller
     if (params[:id].nil?)
       @products = Product.loadfirst(@type_seller).reverse
 

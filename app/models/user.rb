@@ -9,7 +9,9 @@ class User < ActiveRecord::Base
   before_save :ensure_authentication_token
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :authentication_token, :seller, :profile
+  attr_accessible :name, :email, :password, :password_confirmation,
+             :remember_me, :authentication_token, :seller, :profile,
+             :fb_access_token, :fb_id, :gender
   has_many :products, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed
@@ -32,6 +34,14 @@ class User < ActiveRecord::Base
       false
     else
       true
+    end
+  end
+
+  def following
+    if User.current.following?(self)
+      true
+    else
+      false
     end
   end
 
@@ -80,7 +90,7 @@ class User < ActiveRecord::Base
     options[:methods] = ((options[:methods] || []) + 
            [:following_count, :follower_count, :product_count, 
             :voted_count,:profile_thumbnail_path, :profile_medium_path,
-            :is_seller])
+            :is_seller, :following])
 
     #handed 는 voted로 대체 
     #options[:except] = :user_id
