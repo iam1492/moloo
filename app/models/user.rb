@@ -38,7 +38,11 @@ class User < ActiveRecord::Base
   end
 
   def following
-    if User.current.following?(self)
+    @current = User.current
+
+    if @current.nil?
+      false
+    elsif @current.following?(self)
       true
     else
       false

@@ -1,17 +1,21 @@
 1. 가입하기
 
 POST 
-http://14.63.213.154/users.json?user[name]=wooram&user[email]=moloo_test_1@gmail.com&user[password]=meeple&user[password_confirmation]=meeple
+http://14.63.213.154/users.json?user[name]=picky4&user[email]=picky4@gmail.com&user[password]=meeple&user[password_confirmation]=meeple&user[seller]=true
+
+curl --form user[profile]=@Fridge.jpg --form press=OK "http://localhost:3000/users.json?user[name]=picky4&user[email]=picky4@gmail.com&user[password]=meeple&user[password_confirmation]=meeple&user[seller]=true
 
 2. 로그인 하기
 POST 
-http://localhost:3000/users/session.json?email=iam1492@gmail.com&password=ekseo00
+http://localhost:3000/users/session.json?email=picked2@gmail.com&password=meeple
 
 iam1492=dQT8vPYWqupyxsM8oU7R
 lovefamilydev=ciGMxXuds6zLpPArsszq
 iam1494=U7Ca6QWKtzaFc41z16qJ
-
+picked2=rr2YpT9mUE914jT7RGBc
 ciGMxXuds6zLpPArsszq
+
+V5wN4DR1TMAc892Q4Ssa
 
 
 
@@ -30,7 +34,7 @@ http://localhost:3000/products.json?auth_token=6JiWyqpusuJDvwcqpdXV
 
 6. Product 만들기
 POST 
-http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=EjzBhnYZpbysxxwFY9qx
+http://localhost:3000/products.json?name=shoe&description=beautifulshoes&price=10000&auth_token=rr2YpT9mUE914jT7RGBc
 
 7. 한개의 Product 가져오기/지우기
 GET 
@@ -86,3 +90,28 @@ http://localhost:3000/products/1.json?auth_token=1iPnqnwVUvqPpS6ZKss3
 curl --form photo=@image.jpg --form press=OK "http://14.63.213.154/photos.json?product_id=1&auth_token=U7Ca6QWKtzaFc41z16qJ"
 
 http://14.63.213.154/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
+
+"profile" : {
+      "id" : "1673036405",
+      "link" : "http://www.facebook.com/jung.wooram",
+      "about" : "new...services",
+      "verified" : true,
+      "work" : [
+
+      ],
+      "locale" : "en_US",
+      "updated_time" : "2011-05-20T05:06:13+0000",
+      "birthday" : "03/30/1981",
+      "first_name" : "Wooram",
+      "username" : "jung.wooram",
+      "education" : 
+      ],
+      "timezone" : 9,
+      "last_name" : "Jung",
+      "email" : "ruby@kaist.ac.kr",
+      "gender" : "male",
+      "name" : "Wooram Jung"
+    }
+
+
+    http://localhost:3000/users/fb/login.json?fb_token=BAADw6uEkx4gBAAAf2b8q9RV5UV8tUpcSlwl2yi5hoiO97ZAZCZAxwqcw6Ul4UV0YsWdbDHwARdbF5qwje6CBwBRMsATvQXspbAUptZAxV9lycEV9D2qIOn5tZCJNOLmcZD

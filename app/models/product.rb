@@ -44,6 +44,10 @@ class Product < ActiveRecord::Base
     self.photos
   end
 
+  def total_comments
+    self.comments.count
+  end
+
   def user_email
     @user = User.find(user_id)
     @user.email
@@ -71,7 +75,7 @@ class Product < ActiveRecord::Base
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:voted, :total_vote, :photolist, :seller,
+           [:voted, :total_vote, :photolist, :seller, :total_comments, 
             :user_email, :user_name, :categories])
 
     #handed 는 voted로 대체 
