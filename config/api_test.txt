@@ -8,6 +8,8 @@ curl --form user[profile]=@Fridge.jpg --form press=OK "http://localhost:3000/use
 2. 로그인 하기
 POST 
 http://localhost:3000/users/session.json?email=picked2@gmail.com&password=meeple
+rr2YpT9mUE914jT7RGBc
+
 
 iam1492=dQT8vPYWqupyxsM8oU7R
 lovefamilydev=ciGMxXuds6zLpPArsszq
@@ -67,7 +69,7 @@ http://localhost:3000/comments.json?auth_token=gynGZvjg9KQ3PqY6XdiN&product_id=3
 
 12. 특정 product 에 vote 하기
 POST
-http://localhost:3000/products/1/vote.json?auth_token=dQT8vPYWqupyxsM8oU7R
+http://localhost:3000/products/1/vote.json?auth_token=rr2YpT9mUE914jT7RGBc
 
 13. 특정 product 에 unvote 하기
 DELETE

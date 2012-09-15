@@ -28,6 +28,20 @@ class Product < ActiveRecord::Base
     joins("LEFT OUTER JOIN users ON users.id = products.user_id").where("users.seller = ?",is_seller).order("products.created_at DESC").limit(20)
   end
 
+  def self.new_voted_by_user(user_id, created_at)
+    @user = User.find(user_id)
+    Product.includes("votes").where("products.created_at < ?", created_at).where(:votes => {:voter_id => @user.id,
+                                               :voter_type => @user.class.base_class.name, 
+                                               :voteable_type => self.base_class.name}).order("products.created_at DESC").limit(20) 
+  end
+
+  def self.voted_by_user(user_id)
+    @user = User.find(user_id)
+    Product.includes("votes").where(:votes => {:voter_id => @user.id,
+                                               :voter_type => @user.class.base_class.name, 
+                                               :voteable_type => self.base_class.name}).order("products.created_at DESC").limit(20) 
+  end
+  
   def voted
     if User.current.nil?
       false
@@ -66,6 +80,7 @@ class Product < ActiveRecord::Base
       @user.seller
     end
   end
+
 
   def categories
     self.tag_list

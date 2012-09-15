@@ -97,7 +97,8 @@ class User < ActiveRecord::Base
             :is_seller, :following])
 
     #handed 는 voted로 대체 
-    #options[:except] = :user_id
+    options[:except] = :fb_access_token, :profile_updated_at, :profile_file_size,
+                       :fb_id, :profile_content_type, :fb_id, :profile_file_name
     super options
   end
 end

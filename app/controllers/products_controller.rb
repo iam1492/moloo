@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:list, :show, :new_list, :old_list ]
+  before_filter :authenticate_user!, :except => [:list, :show, :new_list, :old_list, :new_picked_list, :my_picked_list ]
   before_filter :set_current_user
 
   def my_list
@@ -49,19 +49,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  # 내가 핸디드한 아이템 리스트 구현 
-  # def my_favorite
-  #   @products = Product.products.paginate(:page => params[:page], :per_page => 10)
-  #   respond_to do |format|
-  #     format.html
-  #     format.json {render :json => {:metadata => {:success => true, :page => params[:page],
-  #                                                 :message => "succeed to list all project",
-  #                                                 :total_count => @products.count},
-  #                                   :product => @products}}
-  #   end
-  # end
-
-   def old_list
+  def old_list
     @tempproduct = Product.first
     @firstproduct = Product.find(params[:id])
     @type_seller = params[:seller]
@@ -84,6 +72,58 @@ class ProductsController < ApplicationController
                                                   :product_count => @products.count,
                                                   :more_product => has_more_old?(@tempproduct, @products.first)},
                                     :product => @products }}
+    end
+  end
+
+  def new_picked_list
+    @tempproduct = Product.last
+    @user_id = params[:user_id]
+    if (@user_id.nil? || @user_id.length == 0)
+      respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => false,
+                                                  :message => "user_id parameter is empty"}}}
+      end
+    end
+
+    if (params[:id].nil?)
+      @products = Product.loadfirst_picked(@user_id).reverse
+    else 
+      @lastproduct = Product.find(params[:id])
+      @products = Product.loadnew_picked(@lastproduct.created_at,@user_id)
+    end
+    respond_to do |format|
+      format.html
+      format.json {render :json => {:metadata => {:success => true,
+                                                  :message => "succeed to fetch new products",
+                                                  :product_count => @products.count},
+                                                  #:more_product => has_more_new?(@tempproduct, @products.last)},
+                                    :product => @products }}
+    end
+  end
+
+  def my_picked_list
+
+    if (params[:id].nil?)
+      @products = Product.voted_by_user(params[:user_id])
+      @more_product = has_more_picked?(@products, params[:user_id])
+    else
+      @lastproduct = Product.find(params[:id])      
+      @products = Product.new_voted_by_user(params[:user_id], @lastproduct.created_at)
+      @more_product = has_more_picked?(@products, params[:user_id])
+    end
+    if (@products.nil?)
+      @voted_count = 0
+    else
+      @voted_count = @products.count
+    end
+    respond_to do |format|
+      format.html
+      format.json {render :json => {:metadata => {:success => true,
+                                                    :message => "succeed to fetch new products",
+                                                    :product_count => @voted_count,
+                                                    :more_product => @more_product},
+                                      :product => @products }}
     end
   end
 
@@ -125,6 +165,10 @@ class ProductsController < ApplicationController
                                                   :product_count => @products_sorted.count},
                                     :product => @products_sorted }}
     end
+  end
+
+  def picked_list
+    @items = Product.tally.limit(20).where('created_at > ?', 2.days.ago).having('COUNT(votes.id) < 10')
   end
 
   def create
@@ -334,4 +378,19 @@ class ProductsController < ApplicationController
     end
   end
 
+  def has_more_picked?(products, user_id)
+    if (products.nil? || products.count < 20)
+      has_more_product = false
+      has_more_product
+    else
+      @more_product = Product.loadold_picked(products.last.created_at,user_id)
+      if (@more_product.nil?)
+        has_more_product = false
+        has_more_product
+      else
+        has_more_product = true
+        has_more_product
+      end
+    end
+  end
 end

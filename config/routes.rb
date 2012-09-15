@@ -31,6 +31,9 @@ MolooTemplate::Application.routes.draw do
   match 'products/hot_list(.format)' => "products#hot_list", :via => :get
   match 'products/new_list(.format)' => "products#new_list", :via => :get
   match 'products/old_list(.format)' => "products#old_list", :via => :get
+  match 'products/new_picked_list(.format)' => "products#new_picked_list", :via => :get
+  match 'products/old_picked_list(.format)' => "products#old_picked_list", :via => :get
+  match 'products/picked_list(.format)' => "products#my_picked_list", :via => :get
 
   # vote
   match 'products/:id/vote(.format)' => "products#vote", :via => :post, :constraints => {:id => /\d+/}
