@@ -81,6 +81,11 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def profile_thumbnail_path
+    @user = User.find(user_id)
+    @user.profile.url(:thumb)
+  end
+
 
   def categories
     self.tag_list
@@ -91,7 +96,7 @@ class Product < ActiveRecord::Base
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
            [:voted, :total_vote, :photolist, :seller, :total_comments, 
-            :user_email, :user_name, :categories])
+            :user_email, :user_name, :categories,:profile_thumbnail_path])
 
     #handed 는 voted로 대체 
     options[:except] = :handed, :user_id

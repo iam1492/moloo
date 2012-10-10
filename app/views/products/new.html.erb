@@ -1,0 +1,35 @@
+<h1>Products#create</h1>
+<!-- 
+<form action '/products' method="POST" enctype="multipart/form-data">
+  <div>name: <br />
+  <input type="text" name="name"></div>
+
+  <div>description: <br />
+  <input type="text" name="description"></div>
+
+  <div>price: <br />
+  <input type="text" name="price"></div>
+
+  <div>photo: <br />
+  <input type="file" name="photo"></div>
+
+  <div><input type="submit" /></div>
+</form> -->
+
+
+<%= form_for @product, :html => { :multipart => true },
+	 :url => { :controller => 'products', :action => 'create' } do |f| %>
+<p><%= f.label :name %><br />
+<%= f.text_field :name %></p>
+
+  <div><%= f.label :description %><br />
+  <%= f.email_field :description %></div>
+
+  <div><%= f.label :price %><br />
+  <%= f.text_field :price %></div>
+
+  <div><%= f.label :photo %><br />
+  <%= f.file_field :photo %></div>
+
+  <div><%= f.submit "Submit" %></div>
+<% end %>

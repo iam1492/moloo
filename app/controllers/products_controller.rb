@@ -32,6 +32,13 @@ class ProductsController < ApplicationController
     else 
       if (params[:categories] != nil)
         @lastproduct = Product.find(params[:id])
+        if (@lastproduct.nil?)
+          respond_to do |format|
+            format.html
+            format.json {render :json => {:metadata => {:success => false,
+                                                        :message => "invalid product id"}}}
+          end
+        end
         @category_array = params[:categories].split(',').collect!{|t| t.to_s }   
         @products = Product.loadnew(@lastproduct.created_at,@type_seller).tagged_with(@category_array)
       else
@@ -52,6 +59,13 @@ class ProductsController < ApplicationController
   def old_list
     @tempproduct = Product.first
     @firstproduct = Product.find(params[:id])
+    if (@firstproduct.nil?)
+      respond_to do |format|
+        format.html
+        format.json {render :json => {:metadata => {:success => false,
+                                                    :message => "invalid product id"}}}
+      end
+    end
     @type_seller = params[:seller]
     if (@type_seller.nil?)
       @type_seller = false
@@ -71,33 +85,6 @@ class ProductsController < ApplicationController
                                                   :message => "succeed to fetch old products",
                                                   :product_count => @products.count,
                                                   :more_product => has_more_old?(@tempproduct, @products.first)},
-                                    :product => @products }}
-    end
-  end
-
-  def new_picked_list
-    @tempproduct = Product.last
-    @user_id = params[:user_id]
-    if (@user_id.nil? || @user_id.length == 0)
-      respond_to do |format|
-        format.html
-        format.json {render :json => {:metadata => {:success => false,
-                                                  :message => "user_id parameter is empty"}}}
-      end
-    end
-
-    if (params[:id].nil?)
-      @products = Product.loadfirst_picked(@user_id).reverse
-    else 
-      @lastproduct = Product.find(params[:id])
-      @products = Product.loadnew_picked(@lastproduct.created_at,@user_id)
-    end
-    respond_to do |format|
-      format.html
-      format.json {render :json => {:metadata => {:success => true,
-                                                  :message => "succeed to fetch new products",
-                                                  :product_count => @products.count},
-                                                  #:more_product => has_more_new?(@tempproduct, @products.last)},
                                     :product => @products }}
     end
   end
@@ -153,10 +140,6 @@ class ProductsController < ApplicationController
   end
 
   def hot_list
-    # @products = Product.paginate :page => params[:page], :order => "vote_count DESC"
-    # @products = Product.all
-    # @products_sorted = @products.sort_by { |item| item.total_vote }.reverse
-
     @products_sorted = Product.order("handed DESC").paginate(:page => params[:page], :per_page => 10)
     respond_to do |format|
       format.html
@@ -171,11 +154,28 @@ class ProductsController < ApplicationController
     @items = Product.tally.limit(20).where('created_at > ?', 2.days.ago).having('COUNT(votes.id) < 10')
   end
 
+  def new
+    @product = Product.new
+  end
+
   def create
+    @example = Product.new(params[:product])
+
+    logger.debug "name:" + @example.name
+    logger.debug "description:" + params[:product][:description]
+
   	name = params[:name]
   	description = params[:description]
   	price = params[:price] || nil
     categories = params[:categories] || nil
+
+    if name.nil?
+      name = params[:product][:name]
+      description = params[:product][:description]
+      price = params[:product][:price] || nil
+      categories = params[:product][:categories] || nil
+    end
+    
   	@product = current_user.products.build(:name => name, :description => :description, :price => price)
     @product.tag_list = categories
   	if @product.save
