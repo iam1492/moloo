@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :password_confirmation,
              :remember_me, :authentication_token, :seller, :profile,
-             :fb_access_token, :fb_id, :gender
+             :fb_access_token, :fb_id, :gender, :description
   has_many :products, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
   has_many :followed_users, through: :relationships, source: :followed

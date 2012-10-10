@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908013821) do
+ActiveRecord::Schema.define(:version => 20121010221753) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20120908013821) do
     t.integer  "fb_id",                  :limit => 8
     t.string   "gender"
     t.string   "fb_access_token"
+    t.string   "description"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
