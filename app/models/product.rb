@@ -86,7 +86,6 @@ class Product < ActiveRecord::Base
     @user.profile.url(:thumb)
   end
 
-
   def categories
     self.tag_list
   end
@@ -99,7 +98,7 @@ class Product < ActiveRecord::Base
             :user_email, :user_name, :categories,:profile_thumbnail_path])
 
     #handed 는 voted로 대체 
-    options[:except] = :handed, :user_id
+    options[:except] = :handed
     super options
   end
 end
