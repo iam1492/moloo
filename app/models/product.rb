@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   acts_as_taggable_on :tags
 
   belongs_to :user
-  has_many :photos, dependent: :destroy
+  has_many :photos, dependent: :destroy, :order => "created_at DESC"
   has_many :comments, dependent: :destroy
 
 
