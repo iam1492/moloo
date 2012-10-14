@@ -159,11 +159,6 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @example = Product.new(params[:product])
-
-    logger.debug "name:" + @example.name
-    logger.debug "description:" + params[:product][:description]
-
   	name = params[:name]
   	description = params[:description]
   	price = params[:price] || nil
