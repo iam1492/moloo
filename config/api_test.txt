@@ -44,6 +44,7 @@ http://localhost:3000/products/1.json?auth_token=EjzBhnYZpbysxxwFY9qx
 
 DELETE
 http://localhost:3000/products/1.json?auth_token=U7Ca6QWKtzaFc41z16qJ
+http://14.63.213.154/products/39.json?auth_token=V5wN4DR1TMAc892Q4Ssa
 
 8. 이미지 업로드
 POST

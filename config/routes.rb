@@ -40,9 +40,10 @@ MolooTemplate::Application.routes.draw do
   match 'products/:id/voters(.format)' => "products#voters", :via => :get, :constraints => {:id => /\d+/}
 
   #comment
-  match 'products/:id/comment(.format)' => "products#add_comment", :via => :post, :constraints => {:id => /\d+/}
+  match 'products/:id/comments(.format)' => "products#add_comment", :via => :post, :constraints => {:id => /\d+/}
   match 'comment/:id(.format)' => "comments#destroy", :via => :delete, :constraints => {:id => /\d+/}
-
+  match 'comments(.format)' => "comments#list", :via => :get
+  
   #photo
   match 'products/:id/photos(.format)' => "products#upload_photo", :via => :post, :constraints => {:id => /\d+/}
   match 'photos/:id(.format)' => "photos#destroy", :via => :delete, :constraints => {:id => /\d+/}

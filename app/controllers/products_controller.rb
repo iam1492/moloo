@@ -194,14 +194,15 @@ class ProductsController < ApplicationController
       format.json {render :status=>401, :json => {:metadata => {:success => false, :message => "invalid product id, cannot find any product" }}}
     else
       @photos = @product.photos
-      @comments = @product.comments
+      #@comments = @product.comments
+      @comments = Comment.loadnew(@product.id)
     	respond_to do |format|
     		format.html
-    		format.json {render :json => {:metadata => {:success => true, :message => "succeed to show product", :photo_count => @photos.count, :comment_count => @comments.count },
+    		format.json {render :json => {:metadata => {:success => true, 
+                                                    :message => "succeed to show product"},
                                       :product => @product,  
-                                      :categories => @product.categories,                                                
-                                      :comments => @comments,
-                                      :user => @product.user}}
+                                      :categories => @product.categories
+                                      }}
     	end
     end
   end
