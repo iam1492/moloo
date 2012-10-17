@@ -171,7 +171,7 @@ class ProductsController < ApplicationController
       categories = params[:product][:categories] || nil
     end
     
-  	@product = current_user.products.build(:name => name, :description => :description, :price => price)
+  	@product = current_user.products.build(:name => name, :description => description, :price => price)
     @product.tag_list = categories
   	if @product.save
   		respond_to do |format|
