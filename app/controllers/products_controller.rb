@@ -231,8 +231,9 @@ class ProductsController < ApplicationController
   end
 
   def add_comment
+    
     @product = Product.find(params[:id])
-    @comment = @product.comments.build(:content => params[:content])
+    @comment = @product.comments.build(:content => params[:content], :user_id => current_user.id)
     if @comment.save
       respond_to do |format|
         format.html

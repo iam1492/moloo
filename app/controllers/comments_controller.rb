@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   
   before_filter :find_product, :except => [:list]
+  before_filter :authenticate_user!, :except => [:list]
 
   def list
     @comment_id = params[:id]
@@ -12,7 +13,7 @@ class CommentsController < ApplicationController
                                                     :message => "product_id should not be empty"}
                                       }}
       end
-      return
+      return  
     end
 
     if (@comment_id.nil?)
@@ -35,7 +36,10 @@ class CommentsController < ApplicationController
   def create
   	#@product = Product.find(params[:product_id])
 
-  	@comment = @product.comments.build(:content => params[:content])
+    @user = User.find_by_auth_token(params[:auth_token])
+    logger.debug ("user id:" + @user.id)
+
+  	@comment = @product.comments.build(:content => params[:content], :user_id => @user.id)
   	if @comment.save
   		respond_to do |format|
   			format.html
