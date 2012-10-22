@@ -18,10 +18,8 @@ class PhotosController < ApplicationController
     else
       respond_to do |format|
   		  format.html
-  		  format.json {render :json => {:metadata => {:success => false}, 
-                                      :photo => @photo, 
-                                      :product_id => @product.id,
-                                      :message => "failed to create photo"}}
+  		  format.json {render :json => {:metadata => {:success => false,
+                                      :message => "failed to create photo"}}}
   	  end
     end
   end

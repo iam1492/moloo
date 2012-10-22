@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017085502) do
+ActiveRecord::Schema.define(:version => 20121022154724) do
 
   create_table "comments", :force => true do |t|
     t.string   "content"
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(:version => 20121017085502) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
+
+  create_table "subcomments", :force => true do |t|
+    t.string   "content"
+    t.integer  "comment_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"

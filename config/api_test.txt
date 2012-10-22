@@ -10,8 +10,11 @@ POST
 http://localhost:3000/users/session.json?email=picked2@gmail.com&password=meeple
 rr2YpT9mUE914jT7RGBc
 
+대댓글 추가
+http://localhost:3000/sub_comments.json?comment_id=36&content=이건몽미&auth_token=dQT8vPYWqupyxsM8oU7R
 
 iam1492=dQT8vPYWqupyxsM8oU7R
+dQT8vPYWqupyxsM8oU7R
 lovefamilydev=ciGMxXuds6zLpPArsszq
 iam1494=U7Ca6QWKtzaFc41z16qJ
 picked2=rr2YpT9mUE914jT7RGBc

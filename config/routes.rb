@@ -1,5 +1,9 @@
 MolooTemplate::Application.routes.draw do
 
+  get "subcomment/create"
+
+  get "subcomment/destroy"
+
   get "comments/create"
   get "comments/destory"
 
@@ -43,6 +47,9 @@ MolooTemplate::Application.routes.draw do
   match 'products/:id/comments(.format)' => "products#add_comment", :via => :post, :constraints => {:id => /\d+/}
   match 'comment/:id(.format)' => "comments#destroy", :via => :delete, :constraints => {:id => /\d+/}
   match 'comments(.format)' => "comments#list", :via => :get
+
+  #sub comment
+  match 'sub_comments(.format)' => "subcomment#create", :via => :post, :constraints => {:comment_id => /\d+/}
   
   #photo
   match 'products/:id/photos(.format)' => "products#upload_photo", :via => :post, :constraints => {:id => /\d+/}

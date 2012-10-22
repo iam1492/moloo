@@ -1,8 +1,10 @@
 class Comment < ActiveRecord::Base
   attr_accessible :content, :product_id, :user_id
   belongs_to :product
+  has_many :subcomments
 
   validate :content, presence: true, length: { maximum: 255 }
+  validate :product_id, presence: true
 
   def self.loadold(product_id, created_at)
     where("comments.product_id = ? AND comments.created_at < ?", product_id, created_at).order("comments.created_at DESC").limit(10)
@@ -39,10 +41,25 @@ class Comment < ActiveRecord::Base
     @user.profile.url(:thumb)
   end
 
+  def sub_comments
+    self.subcomments
+  end
+
+  def sub_comments_count
+
+    if (self.subcomments.nil?)
+      @count = 0
+    else
+      @count = self.subcomments.count
+    end
+    @count
+  end
+
   def as_json options=nil
     options ||= {}
     options[:methods] = ((options[:methods] || []) + 
-           [:user_email, :user_name,:profile_thumbnail_path])
+           [:user_email, :user_name,:profile_thumbnail_path,
+            :sub_comments, :sub_comments_count])
     super options
   end
 end

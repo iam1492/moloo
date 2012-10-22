@@ -26,7 +26,7 @@ class CommentsController < ApplicationController
     respond_to do |format|
         format.html
         format.json {render :json => {:metadata => {:success => true, 
-                                                    :message => "succeed to show product"},
+                                                    :message => "succeed to show comments"},
                                       :product_id => @product_id,  
                                       :comments_count => @comments.count,
                                       :comments => @comments }}
@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
   def create
   	#@product = Product.find(params[:product_id])
 
-    @user = User.find_by_auth_token(params[:auth_token])
+    @user = current_user
     logger.debug ("user id:" + @user.id)
 
   	@comment = @product.comments.build(:content => params[:content], :user_id => @user.id)
@@ -51,7 +51,7 @@ class CommentsController < ApplicationController
   		respond_to do |format|
   			format.html
   			format.json {render :json => {:metadata => {:success => false}, 
-                                                    :comment => @comment.errors,
+                                                    :errors => @comment.errors,
                                                     :message => "fail to create comment"}}
   		end
   	end
@@ -62,16 +62,15 @@ class CommentsController < ApplicationController
   	if @comment.destroy
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => true},     
-                                                    :comment => @comment,
-                                                    :message => "succeed to delete comment"}}
+  			format.json {render :json => {:metadata => {:success => true,
+                                                    :message => "succeed to delete comment"}}}
   		end
   	else
   		respond_to do |format|
   			format.html
-  			format.json {render :json => {:metadata => {:success => false}, 
-                                                    :comment => @comment.errors,
-                                                    :message => "fail to delete comment"}}
+  			format.json {render :json => {:metadata => {:success => false, 
+                                                    :errors => @comment.errors,
+                                                    :message => "fail to delete comment"}}}
   		end
   	end
   end
