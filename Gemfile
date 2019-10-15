@@ -24,7 +24,7 @@ gem "devise", ">= 2.1.2"
 gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.1.0"
 gem "will_paginate", ">= 3.0.3"
-gem "paperclip", "~> 3.0" # Image controller
+gem "paperclip", "~> 4.3" # Image controller
 
 # Use unicorn as the app server
 gem 'unicorn'
