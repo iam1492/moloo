@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gem 'rails', '3.2.7'
+gem 'rails', '3.2.17'
 # To support categories
 gem 'acts-as-taggable-on', '~> 2.3.1'
 gem 'pg' #change for deploy
